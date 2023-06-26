@@ -1,0 +1,28 @@
+.rectangular-fab-button {
+  --border-radius: 15px;
+  --box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3),
+    0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+  --color: black;
+  width: 100px;
+  margin-right: 5px;
+}
+.fab-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  font-size: large;
+}
+.fab-label {
+  margin-left: 2px; /* Adjust the margin as per your preference */
+  font-weight: bold;
+  margin-right: 8px;
+  align-items: center;
+  margin-bottom: 4px;
+  font-size: medium;
+}
+.fab-icon {
+  margin-left: 8px;
+  align-items: center;
+  margin-right: 8px;
+}
