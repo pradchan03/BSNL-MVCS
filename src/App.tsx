@@ -47,6 +47,7 @@ import { Schedule } from './models/Schedule';
 import RedirectToLogin from './components/RedirectToLogin';
 import NewConf from './components/NewConf';
 import Contacts from './components/Contacts';
+import InstantConf from './components/InstantConf';
 
 setupIonicReact();
 
@@ -106,6 +107,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
             <Route path="/tutorial" component={Tutorial} />
             <Route path="/new-conf" component={NewConf} exact />
             <Route path="/contacts" component={Contacts} exact />
+            <Route path="/instant-conf" component={InstantConf} exact />
 
             <Route
               path="/logout"

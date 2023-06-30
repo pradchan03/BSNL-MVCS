@@ -25,7 +25,7 @@ import SessionList from '../components/SessionList';
 import SessionListFilter from '../components/SessionListFilter';
 import './SchedulePage.scss';
 
-import ShareSocialFab from '../components/ShareSocialFab';
+import ShareSocialFab from '../components/NewFabBtn';
 
 import * as selectors from '../data/selectors';
 import { connect } from '../data/connect';

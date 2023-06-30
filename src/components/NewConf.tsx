@@ -18,7 +18,12 @@ import {
 } from '@ionic/react';
 import SchedulePage from '../pages/SchedulePage';
 import Contacts from './Contacts';
+import { useHistory } from 'react-router-dom';
 const NewConf: React.FC = () => {
+  const history = useHistory();
+  const handleStartConfClick = () => {
+    history.push('/instant-conf');
+  };
   return (
     <IonPage>
       <IonHeader>
@@ -32,7 +37,9 @@ const NewConf: React.FC = () => {
       <IonContent>
         <IonSearchbar placeholder="Search" />
 
-        <IonButton expand="block">Create a new meeting</IonButton>
+        <IonButton expand="block" onClick={handleStartConfClick}>
+          Start Conference
+        </IonButton>
         <IonButton expand="block">Schedule in Calendar</IonButton>
         <IonButton expand="block">Create group</IonButton>
         {/* <IonList> */}
