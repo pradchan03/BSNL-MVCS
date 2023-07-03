@@ -1,4 +1,5 @@
 //we reach this page after clicking the new fab button
+
 import React from 'react';
 import {
   IonContent,
@@ -19,8 +20,10 @@ import {
 import SchedulePage from '../pages/SchedulePage';
 import Contacts from './Contacts';
 import { useHistory } from 'react-router-dom';
+
 const NewConf: React.FC = () => {
   const history = useHistory();
+  
   const handleStartConfClick = () => {
     history.push('/instant-conf');
   };

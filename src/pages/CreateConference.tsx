@@ -12,8 +12,10 @@ import {
   IonDatetime,
   IonSelectOption,
   IonSelect,
+  IonLabel,
 } from '@ionic/react';
 import React, { useState } from 'react';
+import './CreateConference.scss'
 
 const CreateConference: React.FC = () => {
   const [timeValue, setTimeValue] = useState<string>('');
@@ -25,56 +27,52 @@ const CreateConference: React.FC = () => {
   const handleDurationChange = (event: CustomEvent<any>) => {
     setDurationValue(event.detail.value);
   };
+  const handleScheduleClick = () => {
+    console.log('Meeting Scheduled');
+  }
 
   return (
     <IonPage>
-      <IonHeader>
+      <IonHeader translucent={true}>
         <IonToolbar>
           <IonMenuButton slot="start"></IonMenuButton>
-          <IonTitle>Create Conference</IonTitle>
+          <IonTitle className='create-conf-title'>Create Conference</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonList>
-        <IonItem>
+      <IonContent fullscreen={false} className='ion-padding'>
+        <IonHeader collapse="condense">
+          <IonToolbar>
+            <IonTitle size="large">Create Conference</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <IonItem className='item'>
+          <IonLabel position='stacked'><b>Subject</b></IonLabel>
           <IonInput
-            label="Subject"
-            labelPlacement="stacked"
-            placeholder="Enter text"
-          ></IonInput>
+            style={{backgroundColor:'#fff'}}
+            placeholder="Enter subject"
+          />
         </IonItem>
-        <IonItem>
+        <IonItem className='item'>
+          <IonLabel position='stacked'><b>Date</b></IonLabel>
           <IonInput
-            label="Date"
-            labelPlacement="stacked"
+            style={{backgroundColor:'#fff'}}
             type="date"
-          ></IonInput>
+          />
         </IonItem>
-        <IonItem>
+        <IonItem className='item'>
+          <IonLabel position='stacked'><b>Time</b></IonLabel>
           <IonInput
-            label="Time"
-            labelPlacement="stacked"
+            style={{backgroundColor:'#fff'}}
             type="time"
             value={timeValue}
             placeholder="HH:MM"
             onIonChange={handleTimeChange}
-          ></IonInput>
+          />
         </IonItem>
-        {/* <IonItem>
-          <IonInput
-            label="Duration"
-            labelPlacement="stacked"
-            type="time"
-            display-format="h:mm A"
-            picker-format="h:mm A"
-            placeholder="HH:MM"
-            value={durationValue}
-            onIonChange={handleDurationChange}
-          ></IonInput>
-        </IonItem> */}
-        <IonItem>
+        <IonItem className='item'>
+          <IonLabel position='stacked'><b>Duration</b></IonLabel>
           <IonSelect
-            label="Duration"
-            labelPlacement="fixed"
+            style={{backgroundColor:'#fff'}}
             placeholder="Select Duration"
             value={durationValue}
             onIonChange={handleDurationChange}
@@ -86,14 +84,10 @@ const CreateConference: React.FC = () => {
             <IonSelectOption value="120">2 hours</IonSelectOption>
           </IonSelect>
         </IonItem>
-        <IonItem>
-          {/* <IonInput
-            label="Number of Participants"
-            labelPlacement="stacked"
-          ></IonInput> */}
+        <IonItem className='item'>
+          <IonLabel position='stacked'><b>Participants</b></IonLabel>
           <IonSelect
-            label="Participants"
-            labelPlacement="fixed"
+            style={{backgroundColor:'#fff'}}
             placeholder="Number of Participants"
           >
             <IonSelectOption value="1">1</IonSelectOption>
@@ -105,9 +99,10 @@ const CreateConference: React.FC = () => {
             <IonSelectOption value="7">7</IonSelectOption>
           </IonSelect>
         </IonItem>
-        <IonItem>
+        <IonItem className='item'>
+          <IonLabel position='stacked'><b>Add Contacts</b></IonLabel>
           <IonSelect
-            label="Add Contacts"
+            style={{backgroundColor:'#fff'}}
             aria-label="Contacts"
             placeholder="Select Contacts"
             multiple={true}
@@ -117,9 +112,10 @@ const CreateConference: React.FC = () => {
             <IonSelectOption value="C3">Contacts 3</IonSelectOption>
           </IonSelect>
         </IonItem>
-        <IonItem>
+        <IonItem className='item'>
+          <IonLabel position='stacked'><b>Add Groups</b></IonLabel>
           <IonSelect
-            label="Add Groups"
+            style={{backgroundColor:'#fff'}}
             aria-label="Fruit"
             placeholder="Select Groups"
             multiple={true}
@@ -129,9 +125,8 @@ const CreateConference: React.FC = () => {
             <IonSelectOption value="C3">Group 3</IonSelectOption>
           </IonSelect>
         </IonItem>
-        <IonButton expand="block">Schedule</IonButton>
-      </IonList>
-      <IonContent className="ion-padding"></IonContent>
+        <IonButton expand="block" onClick={handleScheduleClick}>Schedule</IonButton>
+      </IonContent>
     </IonPage>
   );
 };

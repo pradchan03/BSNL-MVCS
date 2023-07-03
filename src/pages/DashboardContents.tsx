@@ -8,13 +8,24 @@ import {
   IonCardContent,
 } from '@ionic/react';
 
+import UpcomingMeetings from './UpcomingMeetings';
+
 const DashboardContents: React.FC = () => {
   const tabBarHeight = 50;
   return (
-    <IonContent style={{ height: `calc(100% - ${tabBarHeight}px)` }}>
-      <IonCard>
+    <div className='upcoming-meetings'>
+      <UpcomingMeetings />
+    </div>
+  );
+};
+
+export default DashboardContents;
+
+
+{/* <IonContent style={{ height: `calc(100% - ${tabBarHeight}px)` }}>
+      <IonCard style={{backgroundColor:"#d9d9d9"}}>
         <IonCardHeader>
-          <IonCardTitle>Ongoing/Upcoming Meetings</IonCardTitle>
+          <IonCardTitle >Ongoing/Upcoming Meetings</IonCardTitle>
         </IonCardHeader>
         <IonCardContent>
           <IonCard>
@@ -75,8 +86,4 @@ const DashboardContents: React.FC = () => {
           </div>
         </IonCardContent>
       </IonCard>
-    </IonContent>
-  );
-};
-
-export default DashboardContents;
+    </IonContent> */}

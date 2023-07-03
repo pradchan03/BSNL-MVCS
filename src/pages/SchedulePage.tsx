@@ -7,8 +7,6 @@ import {
   IonButtons,
   IonTitle,
   IonMenuButton,
-  IonSegment,
-  IonSegmentButton,
   IonButton,
   IonIcon,
   IonSearchbar,
@@ -53,9 +51,7 @@ const SchedulePage: React.FC<SchedulePageProps> = ({
   setSearchText,
   mode,
 }) => {
-  const [segment, setSegment] = useState<'all' | 'favorites'>('all');
   const [showSearchbar, setShowSearchbar] = useState<boolean>(false);
-  const [showFilterModal, setShowFilterModal] = useState(false);
   const ionRefresherRef = useRef<HTMLIonRefresherElement>(null);
   const [showCompleteToast, setShowCompleteToast] = useState(false);
 
@@ -66,29 +62,22 @@ const SchedulePage: React.FC<SchedulePageProps> = ({
   const doRefresh = () => {
     setTimeout(() => {
       ionRefresherRef.current!.complete();
-      setShowCompleteToast(true);
-    }, 2500);
+      // setShowCompleteToast(true);
+    }, 1000);
   };
 
   return (
     <IonPage ref={pageRef} id="schedule-page">
       <IonHeader translucent={true}>
         <IonToolbar>
+            <IonTitle>Dashboard</IonTitle>
           {!showSearchbar && (
             <IonButtons slot="start">
               <IonMenuButton />
             </IonButtons>
           )}
-          {ios && (
-            <IonSegment
-              value={segment}
-              onIonChange={(e) => setSegment(e.detail.value as any)}
-            >
-              <IonSegmentButton value="all">All</IonSegmentButton>
-              <IonSegmentButton value="favorites">Favorites</IonSegmentButton>
-            </IonSegment>
-          )}
-          {!ios && !showSearchbar && <IonTitle>Schedule</IonTitle>}
+
+          {!ios && !showSearchbar && <IonTitle>Dashboard</IonTitle>}
           {showSearchbar && (
             <IonSearchbar
               showCancelButton="always"
@@ -104,29 +93,10 @@ const SchedulePage: React.FC<SchedulePageProps> = ({
                 <IonIcon slot="icon-only" icon={search}></IonIcon>
               </IonButton>
             )}
-            {!showSearchbar && (
-              <IonButton onClick={() => setShowFilterModal(true)}>
-                {mode === 'ios' ? (
-                  'Filter'
-                ) : (
-                  <IonIcon icon={options} slot="icon-only" />
-                )}
-              </IonButton>
-            )}
+  
           </IonButtons>
         </IonToolbar>
 
-        {!ios && (
-          <IonToolbar>
-            <IonSegment
-              value={segment}
-              onIonChange={(e) => setSegment(e.detail.value as any)}
-            >
-              <IonSegmentButton value="all">All</IonSegmentButton>
-              <IonSegmentButton value="favorites">Favorites</IonSegmentButton>
-            </IonSegment>
-          </IonToolbar>
-        )}
       </IonHeader>
 
       <IonContent fullscreen={true}>
@@ -141,14 +111,6 @@ const SchedulePage: React.FC<SchedulePageProps> = ({
             ></IonSearchbar>
           </IonToolbar>
         </IonHeader>
-
-        <IonRefresher
-          slot="fixed"
-          ref={ionRefresherRef}
-          onIonRefresh={doRefresh}
-        >
-          <IonRefresherContent />
-        </IonRefresher>
 
         <IonToast
           isOpen={showCompleteToast}
@@ -168,15 +130,6 @@ const SchedulePage: React.FC<SchedulePageProps> = ({
           hide={segment === 'all'}
         /> */}
       </IonContent>
-
-      <IonModal
-        isOpen={showFilterModal}
-        onDidDismiss={() => setShowFilterModal(false)}
-        presentingElement={pageRef.current!}
-      >
-        <SessionListFilter onDismissModal={() => setShowFilterModal(false)} />
-      </IonModal>
-
       <ShareSocialFab />
     </IonPage>
   );

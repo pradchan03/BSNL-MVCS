@@ -26,6 +26,7 @@ import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
+
 /* Theme variables */
 import './theme/variables.css';
 import MainTabs from './pages/MainTabs';
@@ -38,16 +39,16 @@ import {
   loadUserData,
 } from './data/user/user.actions';
 import Account from './pages/Account';
-import Login from './pages/Login';
+import LoginPage from './pages/LoginPage';
 import Signup from './pages/Signup';
 import Support from './pages/Support';
-import Tutorial from './pages/Tutorial';
 import HomeOrTutorial from './components/HomeOrTutorial';
 import { Schedule } from './models/Schedule';
 import RedirectToLogin from './components/RedirectToLogin';
 import NewConf from './components/NewConf';
 import Contacts from './components/Contacts';
 import InstantConf from './components/InstantConf';
+import ConferenceTemplates from './pages/ConferenceTemplates';
 
 setupIonicReact();
 
@@ -101,10 +102,9 @@ const IonicApp: React.FC<IonicAppProps> = ({
                 */}
             <Route path="/tabs" render={() => <MainTabs />} />
             <Route path="/account" component={Account} />
-            <Route path="/login" component={Login} />
+            <Route path="/login" component={LoginPage} />
             <Route path="/signup" component={Signup} />
             <Route path="/support" component={Support} />
-            <Route path="/tutorial" component={Tutorial} />
             <Route path="/new-conf" component={NewConf} exact />
             <Route path="/contacts" component={Contacts} exact />
             <Route path="/instant-conf" component={InstantConf} exact />
