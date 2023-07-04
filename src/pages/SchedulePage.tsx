@@ -19,17 +19,17 @@ import {
 } from '@ionic/react';
 import { options, search } from 'ionicons/icons';
 
-import SessionList from '../components/SessionList';
-import SessionListFilter from '../components/SessionListFilter';
 import './SchedulePage.scss';
 
 import ShareSocialFab from '../components/NewFabBtn';
 
+import { call } from 'ionicons/icons';
 import * as selectors from '../data/selectors';
 import { connect } from '../data/connect';
 import { setSearchText } from '../data/sessions/sessions.actions';
 import { Schedule } from '../models/Schedule';
 import DashboardContents from './DashboardContents';
+import { useHistory } from 'react-router';
 
 interface OwnProps {}
 
@@ -55,6 +55,11 @@ const SchedulePage: React.FC<SchedulePageProps> = ({
   const ionRefresherRef = useRef<HTMLIonRefresherElement>(null);
   const [showCompleteToast, setShowCompleteToast] = useState(false);
 
+  const history = useHistory();
+  const handleFabClick = () => {
+    history.push('/new-conf'); // Replace 'other-page' with the desired route/path
+  };
+
   const pageRef = useRef<HTMLElement>(null);
 
   const ios = mode === 'ios';
@@ -77,16 +82,6 @@ const SchedulePage: React.FC<SchedulePageProps> = ({
             </IonButtons>
           )}
 
-          {!ios && !showSearchbar && <IonTitle>Dashboard</IonTitle>}
-          {showSearchbar && (
-            <IonSearchbar
-              showCancelButton="always"
-              placeholder="Search"
-              onIonInput={(e: CustomEvent) => setSearchText(e.detail.value)}
-              onIonCancel={() => setShowSearchbar(false)}
-            ></IonSearchbar>
-          )}
-
           <IonButtons slot="end">
             {!ios && !showSearchbar && (
               <IonButton onClick={() => setShowSearchbar(true)}>
@@ -105,7 +100,7 @@ const SchedulePage: React.FC<SchedulePageProps> = ({
             <IonTitle size="large">Dashboard</IonTitle>
           </IonToolbar>
           <IonToolbar>
-            <IonSearchbar
+            <IonSearchbar 
               placeholder="Search"
               onIonInput={(e: CustomEvent) => setSearchText(e.detail.value)}
             ></IonSearchbar>
@@ -130,7 +125,11 @@ const SchedulePage: React.FC<SchedulePageProps> = ({
           hide={segment === 'all'}
         /> */}
       </IonContent>
-      <ShareSocialFab />
+      <ShareSocialFab 
+      label='New'
+      icon={call}
+      onClick={handleFabClick}
+      />
     </IonPage>
   );
 };

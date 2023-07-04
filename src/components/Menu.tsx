@@ -1,5 +1,5 @@
 import React from 'react';
-import { RouteComponentProps, withRouter, useLocation } from 'react-router';
+import { RouteComponentProps, withRouter, useHistory } from 'react-router';
 
 import {
   IonBackButton,
@@ -33,6 +33,8 @@ import {
 import { connect } from '../data/connect';
 import './Menu.css';
 
+import Logout from '../api/Logout.js'
+
 const routes = {
   appPages: [
     { title: 'Schedule', path: '/tabs/schedule', icon: calendarOutline },
@@ -44,7 +46,6 @@ const routes = {
   loggedInPages: [
     { title: 'Account', path: '/account', icon: person },
     { title: 'Support', path: '/support', icon: help },
-    { title: 'Logout', path: '/logout', icon: logOut },
   ],
 };
 
@@ -62,11 +63,46 @@ interface StateProps {
 interface MenuProps extends RouteComponentProps, StateProps {}
 
 const Menu: React.FC<MenuProps> = ({
-  history,
   isAuthenticated,
   menuEnabled,
 }) => {
-  const location = useLocation();
+
+  const history = useHistory()
+
+  const handleLogout = () => { 
+    console.log(document.cookie);
+      function getCookie(cookieName) {
+        const cookieString = document.cookie;
+        const cookies = cookieString.split(":");
+  
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.startsWith(cookieName + "=")) {
+            return cookie.substring(cookieName.length + 1);
+          }
+        }
+  
+        return null; // Return null if the cookie is not found
+      }
+      const token = getCookie("user");
+      // console.log(cookieValue);
+      console.log(Logout(token));
+      function clearAllCookies() {
+        var cookies = document.cookie.split(":");
+  
+        for (var i = 0; i < cookies.length; i++) {
+          var cookie = cookies[i];
+          var eqPos = cookie.indexOf("=");
+          var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+          document.cookie =
+            name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+        }
+      }
+      clearAllCookies();
+      history.push("/");
+    console.log("clicked")
+  }
+  
 
   function renderlistItems(list: Pages[]) {
     return list
@@ -86,6 +122,7 @@ const Menu: React.FC<MenuProps> = ({
           </IonItem>
         </IonMenuToggle>
       ));
+      
   }
 
   return (
@@ -98,6 +135,13 @@ const Menu: React.FC<MenuProps> = ({
         <IonList lines="none">
           <IonListHeader>Account</IonListHeader>
           {renderlistItems(routes.loggedInPages)}
+            <IonItem
+              detail={false}
+              onClick={handleLogout}
+            >
+            <IonIcon slot="start" icon={logOut} />
+            <IonLabel>Logout</IonLabel>
+            </IonItem>
         </IonList>
       </IonContent>
     </IonMenu>

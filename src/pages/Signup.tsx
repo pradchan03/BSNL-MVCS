@@ -15,7 +15,6 @@ import {
   IonInput,
   IonText,
 } from '@ionic/react';
-import './Login.scss';
 import { setIsLoggedIn, setUsername } from '../data/user/user.actions';
 import { connect } from '../data/connect';
 import { RouteComponentProps } from 'react-router';

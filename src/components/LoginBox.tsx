@@ -3,43 +3,44 @@ import { IonIcon } from '@ionic/react';
 import {eye , eyeOff} from "ionicons/icons"
 import { IonText, IonGrid, IonCol, IonRow, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonInput, IonItem, IonLabel, IonNote } from '@ionic/react';
 
+// const Login = require("../api/Login.js")
 
+import Login from "../api/Login.js";
+import { useHistory } from 'react-router';
 
 const LoginBox = ({ onJoinConferenceClick, setLoggedIn }) => {
-    const [username, setUsername] = useState<string | number>('')
-    const [password, setPassword] = useState<string | number>('')
+    const [username, setUsername] = useState<string>('')
+    const [password, setPassword] = useState<string>('')
     const [showPassword, setShowPassword] = useState(false)
     const [error, setError] = useState('');
-
+    const history = useHistory()
 
     const togglePasswordVisibility = () => {
       setShowPassword(!showPassword);
     };
     
     const loginHandle = () => {
-      if (!username || !password) {
-        setError('Please enter both Username and Password.');
-        return;
-      }
-  
-      // Perform your authentication logic here
-      const validUsername = 'example';
-      const validPassword = 'password';
-  
-      if (username === validUsername && password === validPassword) {
-        // Successful login, navigate to the dashboard
-        setError('')
-        setLoggedIn(true)
-      } else {
-        // Invalid credentials, display error message
-        setError('Invalid username or password.');
-      }
-    };
-    
-    const handleForgotPassword = () => {
-      console.log('Forgot Password clicked');
-      // Add your logic for handling the forgot password functionality here
-    };
+      console.log("Web Account:", username);
+      console.log("Password:", password);
+      document.cookie = "";
+
+    Login(username, password, "WEB")
+      .then((res) => {
+        console.log(res);
+
+        if (res.message === "success") {
+          console.log(res.token);
+          document.cookie = "user=" + res.token + ": userID=" + res.userID;
+          localStorage.setItem("userID", username);
+          console.log(document.cookie);
+          history.push('/tabs');
+        } else alert("Invalid Credentials");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Something went wrong. Please try again.");
+      });
+  };
 
     return (
     <IonCard className="login-box ion-text-center">
@@ -55,7 +56,7 @@ const LoginBox = ({ onJoinConferenceClick, setLoggedIn }) => {
                 <IonInput
                   type="text"
                   value={username}
-                  onIonChange={(event) => setUsername(event.detail.value)}
+                  onIonChange={(event) => setUsername(event.detail.value! as string)}
                 />
                 <IonNote slot="helper">Enter a valid username</IonNote>
               </IonItem>
@@ -68,7 +69,7 @@ const LoginBox = ({ onJoinConferenceClick, setLoggedIn }) => {
                 <IonInput
                   type={showPassword ? 'text' : 'password'}
                   value={password}
-                  onIonChange={(event) => setPassword(event.detail.value)}
+                  onIonChange={(event) => setPassword(event.detail.value! as string)}
                 />
                 <IonButton
                   className="visibility-button"
@@ -94,8 +95,7 @@ const LoginBox = ({ onJoinConferenceClick, setLoggedIn }) => {
           <IonRow>
             <IonCol size='12'>
             <IonItem lines="none" className="forgot-password">
-                <IonLabel
-                  onClick={handleForgotPassword}>
+                <IonLabel>
                   Forgot Password?
                 </IonLabel>
               </IonItem>

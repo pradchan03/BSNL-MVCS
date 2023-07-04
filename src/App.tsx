@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Route } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
   IonRouterOutlet,
@@ -120,7 +120,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
                 );
               }}
             />
-            <Route path="/" component={HomeOrTutorial} exact />
+            <Route path="/" component={LoginPage} exact />
           </IonRouterOutlet>
         </IonSplitPane>
       </IonReactRouter>
