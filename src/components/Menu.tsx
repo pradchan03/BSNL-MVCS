@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { RouteComponentProps, withRouter, useHistory } from 'react-router';
 
 import {
@@ -70,6 +70,7 @@ const Menu: React.FC<MenuProps> = ({
   const history = useHistory()
 
   const handleLogout = () => { 
+
     console.log(document.cookie);
       function getCookie(cookieName) {
         const cookieString = document.cookie;

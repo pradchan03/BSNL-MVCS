@@ -45,16 +45,15 @@
 
 // export default ContactList;
 import React from 'react';
-import { IonList, IonItem, IonText, IonIcon, IonHeader } from '@ionic/react';
+import { IonList, IonItem, IonText, IonIcon, IonHeader, IonTitle } from '@ionic/react';
 import { person } from 'ionicons/icons';
 interface ContactListProps {
-  participants: { name: string; phoneNumber: string }[];
+  participants: { name: string; phoneNumber: number }[];
 }
 
 const ContactList: React.FC<ContactListProps> = ({ participants }) => {
   return (
     <IonHeader>
-      Participant List
       <IonList>
         {participants.map((participant, index) => (
           <IonItem key={index}>

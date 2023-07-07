@@ -64,11 +64,18 @@ import {
   IonItem,
   IonLabel,
   IonText,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButtons,
+  IonGrid,
+  IonRow,
+  IonCol,
 } from '@ionic/react';
 
 interface ModalCallProps {
   isOpen: boolean;
-  onAddParticipant: (name: string, phoneNumber: string) => void;
+  onAddParticipant: (name: string, phoneNumber: any) => void;
   onClose: () => void;
 }
 
@@ -77,41 +84,68 @@ const ModalCall: React.FC<ModalCallProps> = ({
   onAddParticipant,
   onClose,
 }) => {
-  const [name, setName] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
+
+  const [name, setName] = useState<string>('');
+  const [phoneNumber, setPhoneNumber] = useState<number>(null);
 
   const handleAddParticipant = () => {
     onAddParticipant(name, phoneNumber);
     setName('');
-    setPhoneNumber('');
+    setPhoneNumber(null);
     onClose();
+  };
+
+  const inputStyles = {
+    border: '1px solid #d9d9d9',
+    borderRadius: '4px',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+    textIndent: '12px',
+    // Add any other styles as needed
   };
 
   return (
     <IonModal isOpen={isOpen}>
-      <IonContent>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Add Participant</IonTitle>
+          <IonButtons slot="end">
+            <IonButton onClick={onClose}>Close</IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent className='ion-padding'>
         <IonItem>
-          <IonLabel position="floating">Name</IonLabel>
+          <IonLabel position="stacked"><b>Name</b></IonLabel>
           <IonInput
+            style={inputStyles}
             type="text"
             value={name}
-            onIonChange={(e) => setName(e.detail.value!)}
+            onIonChange={(e) => setName(e.detail.value! as string)}
           ></IonInput>
         </IonItem>
         <IonItem>
-          <IonLabel position="floating">Phone Number</IonLabel>
+          <IonLabel position="stacked"><b>Phone Number</b></IonLabel>
           <IonInput
+            style={inputStyles}
             type="text"
             value={phoneNumber}
-            onIonChange={(e) => setPhoneNumber(e.detail.value!)}
+            onIonChange={(e) => setPhoneNumber(e.detail.value! as any)}
           ></IonInput>
         </IonItem>
-        <IonButton expand="block" onClick={handleAddParticipant}>
-          Add Participant
-        </IonButton>
-        <IonButton expand="block" color="danger" onClick={onClose}>
-          Close
-        </IonButton>
+        <IonGrid>
+          <IonRow>
+            <IonCol>
+              <IonButton expand="block" onClick={handleAddParticipant}>
+                Add Participant
+              </IonButton>
+            </IonCol>
+            <IonCol>
+              <IonButton expand="block" color="danger" onClick={onClose}>
+                Close
+              </IonButton>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
       </IonContent>
     </IonModal>
   );

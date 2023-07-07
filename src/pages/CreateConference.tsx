@@ -103,7 +103,6 @@ const CreateConference: React.FC = () => {
           <IonLabel position='stacked'><b>Add Contacts</b></IonLabel>
           <IonSelect
             style={{backgroundColor:'#fff'}}
-            aria-label="Contacts"
             placeholder="Select Contacts"
             multiple={true}
           >
@@ -112,7 +111,7 @@ const CreateConference: React.FC = () => {
             <IonSelectOption value="C3">Contacts 3</IonSelectOption>
           </IonSelect>
         </IonItem>
-        <IonItem className='item'>
+        {/* <IonItem className='item'>
           <IonLabel position='stacked'><b>Add Groups</b></IonLabel>
           <IonSelect
             style={{backgroundColor:'#fff'}}
@@ -124,8 +123,10 @@ const CreateConference: React.FC = () => {
             <IonSelectOption value="C2">Group 2</IonSelectOption>
             <IonSelectOption value="C3">Group 3</IonSelectOption>
           </IonSelect>
-        </IonItem>
-        <IonButton expand="block" onClick={handleScheduleClick}>Schedule</IonButton>
+        </IonItem> */}
+        <div className='btn-container schedule'>
+          <IonButton expand="block" onClick={handleScheduleClick}>Schedule</IonButton>
+        </div>
       </IonContent>
     </IonPage>
   );

@@ -1,4 +1,4 @@
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonRefresher, IonText } from "@ionic/react";
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonRefresher, IonText } from "@ionic/react";
 import React, { useRef, useState } from "react"
 import './UpcomingMeetings.scss'
 
@@ -44,7 +44,8 @@ const UpcomingMeetings: React.FC = () =>{
     }
 
     return (
-        <IonCard className="container-box" style={{backgroundColor:'#d9d9d9'}}>
+        <IonContent scrollY={true} fullscreen={true}>
+        <IonCard className="container-box ion-no-margin">
             <IonCardHeader style={{borderBottom: '1px solid black'}}>
                 <IonCardTitle>Ongoing/Upcoming Meetings</IonCardTitle>
             </IonCardHeader>
@@ -71,11 +72,11 @@ const UpcomingMeetings: React.FC = () =>{
                                 </> : <></>
                         }
                     </IonCardContent>
-                </IonCard>
-                
+                </IonCard>     
             ) )}
             </IonCardContent>
         </IonCard>
+        </IonContent>
     )
 }
 

@@ -45,7 +45,6 @@ import Support from './pages/Support';
 import HomeOrTutorial from './components/HomeOrTutorial';
 import { Schedule } from './models/Schedule';
 import RedirectToLogin from './components/RedirectToLogin';
-import NewConf from './components/NewConf';
 import Contacts from './components/Contacts';
 import InstantConf from './components/InstantConf';
 import ConferenceTemplates from './pages/ConferenceTemplates';
@@ -105,7 +104,6 @@ const IonicApp: React.FC<IonicAppProps> = ({
             <Route path="/login" component={LoginPage} />
             <Route path="/signup" component={Signup} />
             <Route path="/support" component={Support} />
-            <Route path="/new-conf" component={NewConf} exact />
             <Route path="/contacts" component={Contacts} exact />
             <Route path="/instant-conf" component={InstantConf} exact />
 

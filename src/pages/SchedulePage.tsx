@@ -17,7 +17,7 @@ import {
   IonHeader,
   getConfig,
 } from '@ionic/react';
-import { options, search } from 'ionicons/icons';
+import { arrowBack, arrowForward, options, search } from 'ionicons/icons';
 
 import './SchedulePage.scss';
 
@@ -52,24 +52,34 @@ const SchedulePage: React.FC<SchedulePageProps> = ({
   mode,
 }) => {
   const [showSearchbar, setShowSearchbar] = useState<boolean>(false);
+  const [viewHistory, setViewHistory] = useState<boolean>(false)
   const ionRefresherRef = useRef<HTMLIonRefresherElement>(null);
   const [showCompleteToast, setShowCompleteToast] = useState(false);
 
   const history = useHistory();
+
   const handleFabClick = () => {
-    history.push('/new-conf'); // Replace 'other-page' with the desired route/path
+    history.push('/instant-conf');
   };
+
+  const handleViewHistory = () => {
+      setViewHistory(true);
+  }
+
+  const handleBackToDashboard = () => {
+      setViewHistory(false);
+  }
 
   const pageRef = useRef<HTMLElement>(null);
 
   const ios = mode === 'ios';
 
-  const doRefresh = () => {
-    setTimeout(() => {
-      ionRefresherRef.current!.complete();
-      // setShowCompleteToast(true);
-    }, 1000);
-  };
+  // const doRefresh = () => {
+  //   setTimeout(() => {
+  //     ionRefresherRef.current!.complete();
+  //     // setShowCompleteToast(true);
+  //   }, 1000);
+  // };
 
   return (
     <IonPage ref={pageRef} id="schedule-page">
@@ -88,10 +98,8 @@ const SchedulePage: React.FC<SchedulePageProps> = ({
                 <IonIcon slot="icon-only" icon={search}></IonIcon>
               </IonButton>
             )}
-  
           </IonButtons>
         </IonToolbar>
-
       </IonHeader>
 
       <IonContent fullscreen={true}>
@@ -106,14 +114,20 @@ const SchedulePage: React.FC<SchedulePageProps> = ({
             ></IonSearchbar>
           </IonToolbar>
         </IonHeader>
-
-        <IonToast
-          isOpen={showCompleteToast}
-          message="Refresh complete"
-          duration={2000}
-          onDidDismiss={() => setShowCompleteToast(false)}
-        />
-        <DashboardContents />
+        <IonToolbar className='ion-no-padding' >
+        {viewHistory ? (
+            <IonButtons className='view-history-btn' slot='end' onClick={handleBackToDashboard}>
+              <IonIcon icon={arrowBack} />
+              Back to Dashboard
+            </IonButtons>
+          ) : (
+            <IonButtons className='view-history-btn' slot='end' onClick={handleViewHistory}>
+              View Conference History
+              <IonIcon icon={arrowForward}/>
+            </IonButtons>
+          )}
+        </IonToolbar>        
+        <DashboardContents viewHistory={viewHistory} />
         {/* <SessionList
           schedule={schedule}
           listType={segment}
