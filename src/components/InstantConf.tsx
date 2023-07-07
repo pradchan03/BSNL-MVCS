@@ -58,6 +58,23 @@ const InstantConf: React.FC = () => {
     setShowAlert(false);
   };
 
+  const handleAddGroups = () => {
+    console.log('click add groups')
+  };
+
+  const handleCallAbsent = () => {
+    console.log('click call absent')
+  };
+
+  const handleMuteAll = () => {
+    console.log('click muteall')
+  };
+
+  const handleCreateSubConf = () => {
+    console.log('click createsubconf')
+  };
+
+
   const handleAddParticipant = (name: string, phoneNumber: any) => {
     const newParticipant = { name, phoneNumber };
     setParticipants((prevParticipants) => [
@@ -95,25 +112,25 @@ const InstantConf: React.FC = () => {
           <div className="fabicon-labels">
             <div className="fabicon-label">
               <span className='label'>Add Groups</span>
-              <IonFabButton className='fabicon-btn'>
+              <IonFabButton onClick={handleAddGroups} className='fabicon-btn'>
                 <IonIcon icon={peopleCircle} />
               </IonFabButton>  
             </div>
             <div className="fabicon-label">
               <span className='label'>Call Absent</span>
-              <IonFabButton className='fabicon-btn'>
+              <IonFabButton onClick={handleCallAbsent} className='fabicon-btn'>
                 <IonIcon icon={call} />
               </IonFabButton>
             </div>
             <div className="fabicon-label">
               <span className='label'>Mute <br />All</span>
-              <IonFabButton className='fabicon-btn'>
+              <IonFabButton onClick={handleMuteAll} className='fabicon-btn'>
                 <IonIcon icon={volumeMute} />
               </IonFabButton>
             </div>
             <div className="fabicon-label">
               <span className='label'>Create Sub Conf</span>
-              <IonFabButton className='fabicon-btn'>
+              <IonFabButton onClick={handleCreateSubConf} className='fabicon-btn'>
                 <IonIcon icon={people} />
               </IonFabButton>  
             </div>

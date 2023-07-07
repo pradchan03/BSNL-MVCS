@@ -1,60 +1,3 @@
-// import React, { useState } from 'react';
-// import {
-//   IonModal,
-//   IonContent,
-//   IonHeader,
-//   IonToolbar,
-//   IonTitle,
-//   IonInput,
-//   IonButton,
-// } from '@ionic/react';
-
-// interface ParticipantDetailsModalProps {
-//   showModal: boolean;
-//   onClose: () => void;
-//   onStartCall: (name: string, phoneNumber: string) => void;
-// }
-
-// const ParticipantDetailsModal: React.FC<ParticipantDetailsModalProps> = ({
-//   showModal,
-//   onClose,
-//   onStartCall,
-// }) => {
-//   const [name, setName] = useState('');
-//   const [phoneNumber, setPhoneNumber] = useState('');
-
-//   const handleStartCall = () => {
-//     onStartCall(name, phoneNumber);
-//   };
-
-//   return (
-//     <IonModal isOpen={showModal} onDidDismiss={onClose}>
-//       <IonContent>
-//         <IonHeader>
-//           <IonToolbar>
-//             <IonTitle>Participant Details</IonTitle>
-//           </IonToolbar>
-//         </IonHeader>
-//         <IonInput
-//           type="text"
-//           value={name}
-//           placeholder="Name"
-//           onIonChange={(e) => setName(e.detail.value!)}
-//         />
-//         <IonInput
-//           type="tel"
-//           value={phoneNumber}
-//           placeholder="Phone Number"
-//           onIonChange={(e) => setPhoneNumber(e.detail.value!)}
-//         />
-//         <IonButton onClick={handleStartCall}>Add Participant</IonButton>
-//       </IonContent>
-//     </IonModal>
-//   );
-// };
-
-// export default ParticipantDetailsModal;
-
 import React, { useState } from 'react';
 import {
   IonModal,
@@ -75,7 +18,7 @@ import {
 
 interface ModalCallProps {
   isOpen: boolean;
-  onAddParticipant: (name: string, phoneNumber: any) => void;
+  onAddParticipant: (name: string, phoneNumber: any, smsPhoneNumber:any, emailId:string) => void;
   onClose: () => void;
 }
 
@@ -87,11 +30,16 @@ const ModalCall: React.FC<ModalCallProps> = ({
 
   const [name, setName] = useState<string>('');
   const [phoneNumber, setPhoneNumber] = useState<number>(null);
+  const [smsPhoneNumber, setSmsPhoneNumber] = useState<number>(null);
+  const [emailId, setEmailId] = useState<string>('');
+
 
   const handleAddParticipant = () => {
-    onAddParticipant(name, phoneNumber);
+    onAddParticipant(name, phoneNumber,smsPhoneNumber,emailId);
     setName('');
     setPhoneNumber(null);
+    setSmsPhoneNumber(null);
+    setEmailId('');
     onClose();
   };
 
@@ -130,6 +78,24 @@ const ModalCall: React.FC<ModalCallProps> = ({
             type="text"
             value={phoneNumber}
             onIonChange={(e) => setPhoneNumber(e.detail.value! as any)}
+          ></IonInput>
+        </IonItem>
+        <IonItem>
+          <IonLabel position="stacked"><b>SMS Phone Number</b></IonLabel>
+          <IonInput
+            style={inputStyles}
+            type="text"
+            value={smsPhoneNumber}
+            onIonChange={(e) => setSmsPhoneNumber(e.detail.value! as any)}
+          ></IonInput>
+        </IonItem>
+        <IonItem>
+          <IonLabel position="stacked"><b>Email Id</b></IonLabel>
+          <IonInput
+            style={inputStyles}
+            type="text"
+            value={emailId}
+            onIonChange={(e) => setEmailId(e.detail.value! as string)}
           ></IonInput>
         </IonItem>
         <IonGrid>
