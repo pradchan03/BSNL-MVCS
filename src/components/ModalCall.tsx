@@ -48,7 +48,6 @@ const ModalCall: React.FC<ModalCallProps> = ({
     borderRadius: '4px',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
     textIndent: '12px',
-    // Add any other styles as needed
   };
 
   return (
