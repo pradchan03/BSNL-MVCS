@@ -28,7 +28,7 @@ const PreviousConferences: React.FC = () => {
     return (
 
         // <IonContent scrollEvents={true}>
-            <IonCard className="container-box ion-no-margin">
+            <IonCard className="container-box">
                 <IonCardHeader style={{borderBottom: '1px solid black'}}>
                 <IonCardTitle style={{fontSize:'1.5rem'}}>Previous Conferences</IonCardTitle>
                 </IonCardHeader>
