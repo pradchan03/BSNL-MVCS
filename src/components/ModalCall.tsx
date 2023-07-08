@@ -6,7 +6,6 @@ import {
   IonInput,
   IonItem,
   IonLabel,
-  IonText,
   IonHeader,
   IonToolbar,
   IonTitle,
@@ -18,7 +17,7 @@ import {
 
 interface ModalCallProps {
   isOpen: boolean;
-  onAddParticipant: (name: string, phoneNumber: any, smsPhoneNumber:any, emailId:string) => void;
+  onAddParticipant: (name: string, phoneNumber: number, smsPhoneNumber:any, emailId:string) => void;
   onClose: () => void;
 }
 
@@ -74,25 +73,25 @@ const ModalCall: React.FC<ModalCallProps> = ({
           <IonLabel position="stacked"><b>Phone Number</b></IonLabel>
           <IonInput
             style={inputStyles}
-            type="text"
+            type='tel'
             value={phoneNumber}
-            onIonChange={(e) => setPhoneNumber(e.detail.value! as any)}
+            onIonChange={(e) => setPhoneNumber(e.detail.value! as number)}
           ></IonInput>
         </IonItem>
         <IonItem>
           <IonLabel position="stacked"><b>SMS Phone Number</b></IonLabel>
           <IonInput
             style={inputStyles}
-            type="text"
+            type="tel"
             value={smsPhoneNumber}
-            onIonChange={(e) => setSmsPhoneNumber(e.detail.value! as any)}
+            onIonChange={(e) => setSmsPhoneNumber(e.detail.value! as number)}
           ></IonInput>
         </IonItem>
         <IonItem>
           <IonLabel position="stacked"><b>Email Id</b></IonLabel>
           <IonInput
             style={inputStyles}
-            type="text"
+            type="email"
             value={emailId}
             onIonChange={(e) => setEmailId(e.detail.value! as string)}
           ></IonInput>

@@ -25,12 +25,6 @@ const ConferenceTemplates: React.FC = () => {
       participants: ["Neeraj", "Krishna", "Njandu", "Aswin"],
     },
   ]);
-  
- 
-  
- 
-
-
 
     const [showModal, setShowModal] = useState(false);
 

@@ -50,7 +50,6 @@ const inputStyles = {
     }
 
     const handleAddContactGroup = () => {
-          //  Logic to add contacts or groups to the participants array
              setParticipants((prevParticipants) => [...prevParticipants, ...contacts, ...groups]);
              setContacts([])
              setGroups([])
@@ -209,21 +208,21 @@ const inputStyles = {
            {/* Alert Box */}
         <IonAlert
           isOpen={showAlert}
-          header='Add External Participant'
+          header='Add Participant'
           inputs={[
             {
               name: 'name',
               type: 'text',
               placeholder: 'Name',
               value: externalParticipantName,
-              handler: (e) => setExternalParticipantName(e.detail.value),
+              handler: (event: any) => setExternalParticipantName(event.target.value),
             },
             {
               name: 'phone',
-              type: 'tel',
+              type: 'text',
               placeholder: 'Phone Number',
               value: externalParticipantPhone,
-              handler: (e) => setExternalParticipantPhone(e.detail.value),
+              handler: (event: any) => setExternalParticipantPhone(event.target.value),
             },
           ]}
           buttons={[

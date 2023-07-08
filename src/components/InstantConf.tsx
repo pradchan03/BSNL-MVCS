@@ -5,17 +5,10 @@ import {
   IonPage,
   IonToolbar,
   IonButtons,
-  IonBackButton,
   IonTitle,
   IonSearchbar,
   IonIcon,
   IonLabel,
-  IonSegment,
-  IonSegmentButton,
-  IonList,
-  IonItem,
-  IonAvatar,
-  IonText,
   IonButton,
   IonFab,
   IonFabButton,
@@ -24,7 +17,6 @@ import {
 } from '@ionic/react';
 import {
   call,
-  add,
   personAdd,
   peopleCircle,
   volumeMute,
@@ -44,6 +36,7 @@ const InstantConf: React.FC = () => {
   const [participants, setParticipants] = useState([]);
 
   const history = useHistory();
+  const username = localStorage.getItem('userID')
 
   const handleClose = () => {
     setShowAlert(true);
@@ -67,7 +60,7 @@ const InstantConf: React.FC = () => {
   };
 
   const handleMuteAll = () => {
-    console.log('click muteall')
+
   };
 
   const handleCreateSubConf = () => {
@@ -75,13 +68,19 @@ const InstantConf: React.FC = () => {
   };
 
 
-  const handleAddParticipant = (name: string, phoneNumber: any) => {
+  const handleAddParticipant = (name: string, phoneNumber: number) => {
     const newParticipant = { name, phoneNumber };
     setParticipants((prevParticipants) => [
       ...prevParticipants,
       newParticipant,
     ]);
   };
+
+  const handleDeleteParticipant = (index) => {
+    const updatedParticipants = [...participants];
+    updatedParticipants.splice(index, 1);
+    setParticipants(updatedParticipants);
+  }
 
   return (
     <>
@@ -91,7 +90,7 @@ const InstantConf: React.FC = () => {
             <IonButtons slot="end">
               <IonButton onClick={handleClose}>Close</IonButton>
             </IonButtons>
-            <IonTitle>User's Conference</IonTitle>
+            <IonTitle>{username}'s Conference</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent>
@@ -101,7 +100,7 @@ const InstantConf: React.FC = () => {
             <IonLabel>Add Participants</IonLabel>
           </IonButton>
           {/* Participant List */}
-          <ContactList participants={participants} />
+          <ContactList participants={participants} onDeleteParticipant={handleDeleteParticipant} />
 
           {/* Fab Button */}
           <IonFab className='ion-margin' vertical="bottom" horizontal="end" slot="fixed">

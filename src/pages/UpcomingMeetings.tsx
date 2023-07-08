@@ -1,82 +1,80 @@
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonRefresher, IonText } from "@ionic/react";
 import React, { useRef, useState } from "react"
+
+import queryConferenceList from '../api/OngoingList.js'
 import './UpcomingMeetings.scss'
 
 const UpcomingMeetings: React.FC = () =>{
+    const [meetings, setMeetings] = useState([]);
 
-    const [refresh, setRefresh] = useState(0)
-    const [meetings, setMeetings] = useState([
-        {
-            id: 1,
-            title: "Meeting 1",
-            startTime: "2023-06-22 10:00:00",
-            endTime: "2023-06-22 11:30:00",
-            creator: "John Doe",
-            accessNumber: "123456789",
-            conferenceId: "ABC123",
-            chairpersonPassword: "password1",
-            guestPassword: "password2",
-            numParticipants: 10,
-            active: true
-          },
-          {
-            id: 2,
-            title: "Meeting 2",
-            startTime: "2023-06-23 14:00:00",
-            endTime: "2023-06-23 15:30:00",
-            creator: "Jane Smith",
-            accessNumber: "123456789",
-            conferenceId: "ABC123",
-            chairpersonPassword: "password1",
-            guestPassword: "password2",
-            numParticipants: 10,
-            active: false
-          },
-    ])
+    React.useEffect(() => {
+        function getCookie(cookieName) {
+          const cookieString = document.cookie;
+          const cookies = cookieString.split(":");
+    
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.startsWith(cookieName + "=")) {
+              return cookie.substring(cookieName.length + 1);
+            }
+          }
+    
+          return null; 
+        }
+    
+        const token = getCookie("user");
+        queryConferenceList(token)
+          .then((res) => {
+            const meetingArray = Object.values(res)
+              .filter((value) => typeof value === "object")
+              .map((meeting) => meeting);
+            setMeetings(meetingArray);
+          })
+          .catch((err) => {
+            alert("Could not fetch meeting details. Please try again later.");
+          });
+      }, []);
 
     const handleJoinConference = (meeting: any) => {
         console.log("Joining meeting: ");
     }
 
-    const handleEndConference = (meeting: any) => {
-        meeting.active = false
-        setRefresh(refresh + 1)
+    const handleEndConference = (meeting:any) => {
+
     }
 
     return (
-        <IonContent scrollY={true} fullscreen={true}>
-        <IonCard className="container-box ion-no-margin">
+    <IonContent> 
+        <IonCard className="container-box">
             <IonCardHeader style={{borderBottom: '1px solid black'}}>
-                <IonCardTitle>Ongoing/Upcoming Meetings</IonCardTitle>
+                <IonCardTitle style={{fontSize:'1.5rem'}}>Ongoing/Upcoming Meetings</IonCardTitle>
             </IonCardHeader>
             <IonCardContent>
             {meetings.map((meeting) => (
                 <IonCard className="meeting-detail-container" key={meeting.id}>
                     <IonCardHeader>
-                        <IonCardTitle style={{color:'#fff', fontSize: '20px'}}>{meeting.title}</IonCardTitle>
+                        <IonCardTitle style={{color:'#fff', fontSize: '20px'}}>{meeting.subject}</IonCardTitle>
                     </IonCardHeader>
                     <IonCardContent className="meeting-details ">
                         <IonText>Start Time: {meeting.startTime} </IonText><br />
-                        <IonText>End Time: {meeting.endTime} </IonText><br />
-                        <IonText>Creator: {meeting.creator} </IonText><br />
-                        
-                        {meeting.active ?
-                                <>
-                                <IonText>Access Number: {meeting.accessNumber} </IonText><br />
-                                <IonText>Conf ID: {meeting.conferenceId} </IonText><br />
-                                <IonText>Admin Password: {meeting.chairpersonPassword} </IonText><br />
-                                <IonText>Guest Password: {meeting.guestPassword} </IonText><br />
-                                <IonText>Participants: {meeting.numParticipants} </IonText><br /><br />
-                                <IonButton shape="round" color='success' style={{width:'100px', marginRight:'10px'}} onClick={() => handleJoinConference(meeting)}>Join</IonButton>
-                                <IonButton shape="round" color='danger' style={{width:'100px', marginLeft:'10px'}} onClick={() => handleEndConference(meeting)}>End Now</IonButton>
-                                </> : <></>
-                        }
+                        <IonText>Duration: {parseInt(meeting.length)/60000} minutes </IonText><br />
+                        <IonText>Creator: {meeting.scheduserName} </IonText><br />
+                        <IonText>Access Number: {meeting.accessNumber} </IonText><br />
+                        <IonText>Conf ID: {meeting.conferenceKey.conferenceID} </IonText><br />
+                        <IonText>Admin Password: {meeting.chair} </IonText><br />
+                        <IonText>Guest Password: {meeting.general} </IonText><br />
+                        <IonText>Participants: {meeting.size} </IonText><br />
+                        {/* <IonText>Participants: {meeting.numParticipants} </IonText><br /> */}
+                        <br />
+                        <IonButton shape="round" color='success' style={{width:'100px', marginRight:'10px'}} onClick={() => handleJoinConference(meeting)}>Join</IonButton>
+                        <IonButton shape="round" color='danger' style={{width:'100px', marginLeft:'10px'}} onClick={() => handleEndConference(meeting)}>End Now</IonButton>
                     </IonCardContent>
                 </IonCard>     
             ) )}
             </IonCardContent>
         </IonCard>
-        </IonContent>
+    </IonContent>
+    
     )
 }
 
