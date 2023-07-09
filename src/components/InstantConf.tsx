@@ -56,11 +56,19 @@ const InstantConf: React.FC = () => {
   };
 
   const handleCallAbsent = () => {
-    console.log('click call absent')
+    const updatedParticipants = participants.map((participant) => ({
+      ...participant,
+      onCall: true,
+    }));
+    setParticipants(updatedParticipants);
   };
 
   const handleMuteAll = () => {
-
+    const updatedParticipants = participants.map((participant) => ({
+      ...participant,
+      muted: true,
+    }));
+    setParticipants(updatedParticipants);
   };
 
   const handleCreateSubConf = () => {
@@ -69,7 +77,7 @@ const InstantConf: React.FC = () => {
 
 
   const handleAddParticipant = (name: string, phoneNumber: number) => {
-    const newParticipant = { name, phoneNumber };
+    const newParticipant = { name, phoneNumber, muted: false };
     setParticipants((prevParticipants) => [
       ...prevParticipants,
       newParticipant,
@@ -81,6 +89,20 @@ const InstantConf: React.FC = () => {
     updatedParticipants.splice(index, 1);
     setParticipants(updatedParticipants);
   }
+
+  const handleToggleParticipantMute = (index: number) => {
+    const updatedParticipants = [...participants];
+    const participant = updatedParticipants[index];
+    participant.muted = !participant.muted;
+    setParticipants(updatedParticipants);
+  };
+
+  const handleCallParticipantAbsent = (index: number) => {
+    const updatedParticipants = [...participants];
+    const participant = updatedParticipants[index];
+    participant.onCall = !participant.onCall;
+    setParticipants(updatedParticipants);
+  };
 
   return (
     <>
@@ -100,7 +122,11 @@ const InstantConf: React.FC = () => {
             <IonLabel>Add Participants</IonLabel>
           </IonButton>
           {/* Participant List */}
-          <ContactList participants={participants} onDeleteParticipant={handleDeleteParticipant} />
+          <ContactList 
+            participants={participants} 
+            onDeleteParticipant={handleDeleteParticipant}
+            onToggleParticipantMute={handleToggleParticipantMute}
+            onCallAbsentParticipant= {handleCallParticipantAbsent} />
 
           {/* Fab Button */}
           <IonFab className='ion-margin' vertical="bottom" horizontal="end" slot="fixed">

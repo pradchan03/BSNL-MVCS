@@ -1,10 +1,21 @@
 import React, { useState } from 'react';
-import { IonList, IonItem, IonText, IonIcon, IonHeader, IonTitle, IonToolbar, IonLabel, IonButtons, IonContent } from '@ionic/react';
+import { IonList, IonItem, IonText, IonIcon, IonLabel, IonButtons, IonContent, IonAlert } from '@ionic/react';
 import { call, mic, micOff, person, trash } from 'ionicons/icons';
 
+import './InstantConf.css'
+
+interface Participant {
+  name: string;
+  phoneNumber: number;
+  muted: boolean;
+  onCall: boolean;
+}
+
 interface ContactListProps {
-  participants: { name: string; phoneNumber: number }[];
+  participants: Participant[];
   onDeleteParticipant: (index: number) => void;
+  onToggleParticipantMute: (index: number) => void;
+  onCallAbsentParticipant: (index: number) => void;
 }
 
 const inStyles = {
@@ -15,33 +26,32 @@ const inStyles = {
   zIndex: '1'
 }
 
-const ContactList: React.FC<ContactListProps> = ({ participants, onDeleteParticipant }) => {
+const ContactList: React.FC<ContactListProps> = ({ 
+  participants,
+  onDeleteParticipant, 
+  onToggleParticipantMute,
+  onCallAbsentParticipant }) => {
 
-  const [activeCallIconIndexes, setActiveCallIconIndexes] = useState<number[]>([]);
-  const [activeMuteIconIndexes, setActiveMuteIconIndexes] = useState<number[]>([]);
-
-  const handleCallParticipant = (index: number) => {
-    if (!activeCallIconIndexes.includes(index)) {
-      setActiveCallIconIndexes(prevIndexes => [...prevIndexes, index]);
-    }
-  }
-
-  const handleEndCallParticipant = (index: number) => {
-    setActiveCallIconIndexes(prevIndexes => prevIndexes.filter(idx => idx !== index));
-  }
-
-  const handleMute = (index: number) => {
-    if (!activeMuteIconIndexes.includes(index)) {
-      setActiveMuteIconIndexes(prevIndexes => [...prevIndexes, index]);
-    }  }
-
-  const handleUnmute = (index: number) => {
-    setActiveMuteIconIndexes(prevIndexes => prevIndexes.filter(idx => idx !== index));
-  }
-
+  const [selectedParticipantIndex, setSelectedParticipantIndex] = useState<number>(-1);
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
+   
   const handleDeleteParticipant = (index: number) => {
-    onDeleteParticipant(index);
-  }
+    setSelectedParticipantIndex(index);
+    setShowDeleteAlert(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (selectedParticipantIndex !== -1) {
+      onDeleteParticipant(selectedParticipantIndex);
+      setSelectedParticipantIndex(-1);
+    }
+    setShowDeleteAlert(false);
+  };
+
+  const handleCancelDelete = () => {
+    setSelectedParticipantIndex(-1);
+    setShowDeleteAlert(false);
+  };
 
   return (    
     <IonContent scrollY={true}>
@@ -49,21 +59,21 @@ const ContactList: React.FC<ContactListProps> = ({ participants, onDeletePartici
       <IonList className='ion-margin-top'>
         {participants.map((participant, index) => (
           <IonItem key={index}>
-            {activeCallIconIndexes.includes(index)?
-            (<IonButtons className='ion-padding' slot='end'>
-              <IonIcon color='danger' style={{fontSize:'1.5rem'}} icon='../public/assets/icon/call_end_FILL1_wght400_GRAD0_opsz48.svg' onClick={() => handleEndCallParticipant(index)} />
+            {participant.onCall?
+            (<IonButtons className='ion-padding participant-btn' slot='end'>
+              <IonIcon color='danger' icon='../public/assets/icon/call_end_FILL1_wght400_GRAD0_opsz48.svg' onClick={() => onCallAbsentParticipant(index)} />
             </IonButtons>):
-            (<IonButtons className='ion-padding' style={{padding:'20px'}} slot='end'>
-              <IonIcon color='success' icon={call} onClick={() => handleCallParticipant(index)} />
+            (<IonButtons className='ion-padding participant-btn' slot='end'>
+              <IonIcon color='success' icon={call} onClick={() => onCallAbsentParticipant(index)} />
             </IonButtons>)}
-            {activeMuteIconIndexes.includes(index)?
-            <IonButtons className='ion-padding' slot='end'>
-              <IonIcon icon={micOff} onClick={() => handleUnmute(index)} />
+            {participant.muted?
+            <IonButtons className='ion-padding participant-btn' slot='end'>
+              <IonIcon icon={micOff} onClick={() => onToggleParticipantMute(index)} />
             </IonButtons>:
-            <IonButtons className='ion-padding' slot='end'>
-              <IonIcon icon={mic} onClick={() => handleMute(index)} />
+            <IonButtons className='ion-padding participant-btn' slot='end'>
+              <IonIcon icon={mic} onClick={() => onToggleParticipantMute(index)} />
             </IonButtons>}
-            <IonButtons className='ion-padding' slot='end' onClick={() => handleDeleteParticipant(index)}>
+            <IonButtons className='ion-padding participant-btn' slot='end' onClick={() => handleDeleteParticipant(index)}>
               <IonIcon icon={trash} />
             </IonButtons>
             <IonIcon slot="start" icon={person}></IonIcon>
@@ -76,6 +86,22 @@ const ContactList: React.FC<ContactListProps> = ({ participants, onDeletePartici
           </IonItem>
         ))}
       </IonList>
+      <IonAlert
+        isOpen={showDeleteAlert}
+        header="Confirmation"
+        message="Are you sure you want to remove this participant?"
+        buttons={[
+          {
+            text: 'No',
+            role: 'cancel',
+            handler: handleCancelDelete,
+          },
+          {
+            text: 'Yes',
+            handler: handleConfirmDelete,
+          },
+        ]}
+      />
     </IonContent>
   );
 };

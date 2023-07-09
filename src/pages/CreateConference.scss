@@ -21,6 +21,14 @@
     width: 8.5rem;
 }
 
+.participants-box{
+    height: 25%; 
+    width: 100%;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 ion-modal{
     --border-radius: 10px;
     --height: 70%;

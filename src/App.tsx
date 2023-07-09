@@ -38,7 +38,7 @@ import {
   setUsername,
   loadUserData,
 } from './data/user/user.actions';
-import Account from './pages/Account';
+import Account from './pages/Settings';
 import LoginPage from './pages/LoginPage';
 import Signup from './pages/Signup';
 import Support from './pages/Support';
@@ -47,6 +47,7 @@ import { Schedule } from './models/Schedule';
 import RedirectToLogin from './components/RedirectToLogin';
 import Contacts from './components/Contacts';
 import InstantConf from './components/InstantConf';
+import Settings from './pages/Settings';
 import ConferenceTemplates from './pages/ConferenceTemplates';
 
 setupIonicReact();
@@ -100,7 +101,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
                 which makes transitions between tabs and non tab pages smooth
                 */}
             <Route path="/tabs" render={() => <MainTabs />} />
-            <Route path="/account" component={Account} />
+            <Route path="/settings" component={Settings} />
             <Route path="/login" component={LoginPage} />
             <Route path="/signup" component={Signup} />
             <Route path="/support" component={Support} />

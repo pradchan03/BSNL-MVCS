@@ -28,6 +28,7 @@ import {
   person,
   personAdd,
   call,
+  settings,
 } from 'ionicons/icons';
 
 import { connect } from '../data/connect';
@@ -44,7 +45,7 @@ const routes = {
     { title: 'About', path: '/tabs/about', icon: informationCircleOutline },
   ],
   loggedInPages: [
-    { title: 'Account', path: '/account', icon: person },
+    { title: 'Settings', path: '/settings', icon: settings },
     { title: 'Support', path: '/support', icon: help },
   ],
 };

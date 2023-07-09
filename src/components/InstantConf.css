@@ -24,3 +24,12 @@
     top: 5px;
     width: 75px;
 }
+
+.participant-btn{
+  border-radius: 100%;
+  font-size: 1.3rem;
+}
+
+.participant-btn:active{
+  background-color: #dde6ed;
+}

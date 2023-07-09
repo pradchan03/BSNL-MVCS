@@ -20,10 +20,12 @@ import {
   IonRow,
   IonCol,
   IonAlert,
+  IonChip,
 } from '@ionic/react';
 import React, { useState } from 'react';
 import './CreateConference.scss'
-import { add } from 'ionicons/icons';
+import { add, closeCircle } from 'ionicons/icons';
+import { Value } from 'sass';
 
 const inputStyles = {
   border: '1px solid #d9d9d9',
@@ -41,7 +43,7 @@ const inputStyles = {
     const [contacts, setContacts] = useState<string[]>([]);
     const [groups, setGroups] = useState<string[]>([]);
     const [participants, setParticipants] = useState<string[]>([]);
-    const [externalParticipantName, setExternalParticipantName] = useState('');
+    const [externalParticipantName, setExternalParticipantName] = useState<string>('');
     const [externalParticipantPhone, setExternalParticipantPhone] = useState('');
     const [showAlert, setShowAlert] = useState(false);
     
@@ -50,10 +52,10 @@ const inputStyles = {
     }
 
     const handleAddContactGroup = () => {
-             setParticipants((prevParticipants) => [...prevParticipants, ...contacts, ...groups]);
-             setContacts([])
-             setGroups([])
-         };
+      setParticipants((prevParticipants) => [...prevParticipants, ...contacts, ...groups]);
+      setContacts([])
+      setGroups([])
+    };
       
     const handleAddExternalParticipant = () => {
       setShowAlert(true);
@@ -65,7 +67,8 @@ const inputStyles = {
       setExternalParticipantPhone('');
     };
 
-    const handleAlertConfirm = () => {
+    const handleAlertConfirm = (data: string) => {
+      console.log(externalParticipantName)
       if (externalParticipantName && externalParticipantPhone) {
         const participant = `${externalParticipantName} - ${externalParticipantPhone}`;
         setParticipants((prevParticipants) => [...prevParticipants, participant]);
@@ -73,6 +76,12 @@ const inputStyles = {
         setExternalParticipantPhone('');
       }
       setShowAlert(false);
+    };
+
+    const handleRemoveParticipant = (index: number) => {
+      const updatedParticipants = [...participants];
+      updatedParticipants.splice(index, 1);
+      setParticipants(updatedParticipants);
     };
 
   return (
@@ -157,9 +166,13 @@ const inputStyles = {
             multiple={true}
             onIonChange={(event) => setContacts(event.detail.value!)}
           >
-            <IonSelectOption>Contacts 1</IonSelectOption>
-            <IonSelectOption>Contacts 2</IonSelectOption>
-            <IonSelectOption>Contacts 3</IonSelectOption>
+            <IonSelectOption>Neerali</IonSelectOption>
+            <IonSelectOption>Krishnali</IonSelectOption>
+            <IonSelectOption>Asoon</IonSelectOption>
+            <IonSelectOption>Assaai Mon</IonSelectOption>
+            <IonSelectOption>Njandu</IonSelectOption>
+            <IonSelectOption>Scambot</IonSelectOption>
+            <IonSelectOption>Ardraali</IonSelectOption>
           </IonSelect>
         </IonItem>
         <IonItem className='item'>
@@ -186,7 +199,7 @@ const inputStyles = {
             <IonCol size='6'>        
               <IonButton      
                 className='add-participants-btn'                
-                onClick={() => {handleAddExternalParticipant()}}>
+                onClick={handleAddExternalParticipant}>
                   Add External<br /> Participant
               </IonButton>
             </IonCol>
@@ -194,15 +207,14 @@ const inputStyles = {
         </IonGrid>
 
            <h2 style={{fontFamily:'system-ui'}}>Participants:</h2>
-           <IonContent className='ion-padding' style={{
-              height:'25%', 
-              width:'100%',
-              border: '1px solid #d9d9d9',
-              borderRadius: '4px',
-              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-              textIndent: '12px'}}>
+           <IonContent className='ion-padding participants-box'>
             {participants.map((participant, index) => (
-             <p key={index}>{participant}</p>
+            <IonChip key={index}>
+              <IonLabel>{participant}</IonLabel>
+              <IonIcon 
+              icon={closeCircle}
+              onClick={() => handleRemoveParticipant(index)} />
+            </IonChip>
            ))}
            </IonContent>
            {/* Alert Box */}
@@ -214,15 +226,14 @@ const inputStyles = {
               name: 'name',
               type: 'text',
               placeholder: 'Name',
-              value: externalParticipantName,
-              handler: (event: any) => setExternalParticipantName(event.target.value),
+              value: externalParticipantName.toString,
+              handler: (event) => setExternalParticipantName(event.target.value! as string)
             },
             {
               name: 'phone',
               type: 'text',
               placeholder: 'Phone Number',
               value: externalParticipantPhone,
-              handler: (event: any) => setExternalParticipantPhone(event.target.value),
             },
           ]}
           buttons={[
@@ -233,7 +244,7 @@ const inputStyles = {
             },
             {
               text: 'Add',
-              handler: handleAlertConfirm,
+              handler: (data) => handleAlertConfirm(data),
             },
           ]}
         />
