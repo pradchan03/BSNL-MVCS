@@ -6,10 +6,8 @@ import {
   IonToolbar,
   IonButton,
   IonMenuButton,
-  IonList,
   IonItem,
   IonInput,
-  IonDatetime,
   IonSelectOption,
   IonSelect,
   IonLabel,
@@ -24,8 +22,8 @@ import {
 } from '@ionic/react';
 import React, { useState } from 'react';
 import './CreateConference.scss'
-import { add, closeCircle } from 'ionicons/icons';
-import { Value } from 'sass';
+import { add, closeCircle, time } from 'ionicons/icons';
+import createconference from '../api/CreateConference.js'
 
 const inputStyles = {
   border: '1px solid #d9d9d9',
@@ -40,6 +38,7 @@ const inputStyles = {
     const [date, setDate] = useState<string>('');
     const [timeValue, setTimeValue] = useState<string>('');
     const [durationValue, setDurationValue] = useState<string>('');
+    const [participantNum, setParticipantNum] = useState<string>('')
     const [contacts, setContacts] = useState<string[]>([]);
     const [groups, setGroups] = useState<string[]>([]);
     const [participants, setParticipants] = useState<string[]>([]);
@@ -47,8 +46,72 @@ const inputStyles = {
     const [externalParticipantPhone, setExternalParticipantPhone] = useState('');
     const [showAlert, setShowAlert] = useState(false);
     
+    //To convert the start date into day, month and year
+
+    const parseDate = (dateString: string) => {
+      const dateObj = new Date(dateString);
+      const day = dateObj.getDate();
+      const month = dateObj.getMonth() + 1; // January is 0
+      const year = dateObj.getFullYear();
+  
+      return { day, month, year };
+    };
+
+    const parseTime = (timeString: string) => {
+      const timeObj = new Date(`1970-01-01T${timeString}`);
+      const hour = timeObj.getHours();
+      const minutes = timeObj.getMinutes();
+
+      return { hour, minutes}
+    }
+
+    const parsedDate = parseDate(date);
+    const parsedTime = parseTime(timeValue);
+    const participantNumInt = parseInt(participantNum, 10)
+
     const handleScheduleClick = () => {
-      console.log('Meeting Scheduled');
+      
+      const durationInMinutes = parseInt(durationValue, 10)
+      const durationInMilliSeconds = durationInMinutes * 60 * 1000;
+
+      const selectedDate = new Date(
+        `${parsedDate.month} ${parsedDate.day}, ${parsedDate.year} ${parsedTime.hour}:${parsedTime.minutes}`
+      )
+
+      const utcTimestamp = selectedDate.getTime();
+      const formattedStartTimeUTC = utcTimestamp.toString();
+      
+      function getCookie(cookieName: any) {
+        const cookieString = document.cookie;
+        const cookies = cookieString.split(":");
+  
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.startsWith(cookieName + "=")) {
+            return cookie.substring(cookieName.length + 1);
+          }
+        }
+  
+        return null; // Return null if the cookie is not found
+      }
+
+      var token = getCookie("user");
+
+      createconference(
+        token,
+        durationInMilliSeconds,
+        participantNumInt,
+        48,
+        "en_US",
+        subject,
+        formattedStartTimeUTC
+      )
+
+      .then((res) => {
+        console.log(res);
+      }).catch((err)=>{
+        console.log(err)
+      })
     }
 
     const handleAddContactGroup = () => {
@@ -144,8 +207,10 @@ const inputStyles = {
         <IonItem className='item'>
           <IonLabel position='stacked'><b>Participants</b></IonLabel>
           <IonSelect
+            value={participantNum}
             style={inputStyles}
             placeholder="Number of Participants"
+            onIonChange={(event)=> setParticipantNum(event.detail.value)}
           >
             <IonSelectOption value="3">3</IonSelectOption>
             <IonSelectOption value="4">4</IonSelectOption>
@@ -227,7 +292,7 @@ const inputStyles = {
               type: 'text',
               placeholder: 'Name',
               value: externalParticipantName.toString,
-              handler: (event) => setExternalParticipantName(event.target.value! as string)
+              handler: (event) => setExternalParticipantName(event.detail.value! as string)
             },
             {
               name: 'phone',

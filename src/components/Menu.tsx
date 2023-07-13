@@ -38,7 +38,7 @@ import Logout from '../api/Logout.js'
 
 const routes = {
   appPages: [
-    { title: 'Schedule', path: '/tabs/schedule', icon: calendarOutline },
+    { title: 'Dashboard', path: '/tabs/schedule', icon: calendarOutline },
     { title: 'Create Conference', path: '/tabs/createconf', icon: call },
     { title: 'Contacts', path: '/tabs/speakers', icon: peopleOutline },
     { title: 'Templates', path: '/tabs/templates', icon: create },
@@ -141,8 +141,8 @@ const Menu: React.FC<MenuProps> = ({
               detail={false}
               onClick={handleLogout}
             >
-            <IonIcon slot="start" icon={logOut} />
-            <IonLabel>Logout</IonLabel>
+            <IonIcon color='danger' slot="start" icon={logOut} />
+            <IonLabel color='danger'>Logout</IonLabel>
             </IonItem>
         </IonList>
       </IonContent>

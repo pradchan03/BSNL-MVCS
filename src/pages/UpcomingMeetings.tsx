@@ -35,19 +35,60 @@ const UpcomingMeetings: React.FC = () =>{
           });
       }, []);
 
+    const convertUTCMillisecondsToDate = (utcMilliseconds: any) => {
+    // Create a new Date object with the UTC milliseconds
+    var date = new Date(parseInt(utcMilliseconds, 10));
+  
+    // Specify the time zone as 'Asia/Kolkata' for Indian time
+    var options = { timeZone: "Asia/Kolkata" };
+  
+    // Extract the different components of the date in Indian time
+    var year = date.toLocaleString("en-IN", { year: "numeric", timeZone: "Asia/Kolkata" });
+    var month = date.toLocaleString("en-IN", { month: "2-digit", timeZone: "Asia/Kolkata" });
+    var day = date.toLocaleString("en-IN", { day: "2-digit", timeZone: "Asia/Kolkata" });
+    var hours = date.toLocaleString("en-IN", {
+      hour: "2-digit",
+      hour12: false,
+      timeZone: "Asia/Kolkata",
+    });
+    var minutes = date.toLocaleString("en-IN", { minute: "2-digit", timeZone: "Asia/Kolkata" });
+  
+    // Format the date and time string
+    var formattedDate = year + "-" + month + "-" + day;
+    var formattedTime = hours + ":" + minutes;
+  
+    // Return the formatted date and time
+    return {
+      year: year,
+      month: month,
+      day: day,
+      hours: hours,
+      minutes: minutes,
+      formattedDate: formattedDate,
+      formattedTime: formattedTime,
+    };
+  }
+
+    const convertMillisecondsToHoursAndMinutes = (milliseconds: any) => {
+      var hours = Math.floor(milliseconds / (1000 * 60 * 60));
+      var minutes = Math.floor((milliseconds % (1000 * 60 * 60)) / (1000 * 60));
+    
+      return { hours: hours, minutes: minutes };
+    }
+      
     const handleJoinConference = (meeting: any) => {
         console.log("Joining meeting: ");
     }
 
     const handleEndConference = (meeting:any) => {
-
+      
     }
-
+    
     return (
     <IonContent> 
         <IonCard className="container-box">
             <IonCardHeader style={{borderBottom: '1px solid black'}}>
-                <IonCardTitle style={{fontSize:'1.5rem'}}>Ongoing/Upcoming Meetings</IonCardTitle>
+                <IonCardTitle style={{fontSize:'1.3rem'}}>Ongoing/Upcoming Meetings</IonCardTitle>
             </IonCardHeader>
             <IonCardContent>
             {meetings.map((meeting) => (
@@ -56,8 +97,8 @@ const UpcomingMeetings: React.FC = () =>{
                         <IonCardTitle style={{color:'#fff', fontSize: '20px'}}>{meeting.subject}</IonCardTitle>
                     </IonCardHeader>
                     <IonCardContent className="meeting-details ">
-                        <IonText>Start Time: {meeting.startTime} </IonText><br />
-                        <IonText>Duration: {parseInt(meeting.length)/60000} minutes </IonText><br />
+                        <IonText>Start Time: {convertUTCMillisecondsToDate(meeting.startTime).formattedTime} </IonText><br />
+                        <IonText>Duration: {convertMillisecondsToHoursAndMinutes(meeting.length).hours} hours {convertMillisecondsToHoursAndMinutes(meeting.length).minutes} minutes </IonText><br />
                         <IonText>Creator: {meeting.scheduserName} </IonText><br />
                         <IonText>Access Number: {meeting.accessNumber} </IonText><br />
                         <IonText>Conf ID: {meeting.conferenceKey.conferenceID} </IonText><br />
