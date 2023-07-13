@@ -12,8 +12,13 @@
     overflow-y: auto;
   }  
 
-.container-box{
+.container-card{
     background-color: #d9d9d9;
     border-radius: 0;
-    height: 95%;
+    height: 70%;
+    overflow-y: auto;
+}
+
+.container-box{
+    position: fixed;
 }

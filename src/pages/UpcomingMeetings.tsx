@@ -1,8 +1,9 @@
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonRefresher, IonText } from "@ionic/react";
-import React, { useRef, useState } from "react"
+import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonIcon, IonRefresher, IonText, IonToolbar } from "@ionic/react";
+import React, { useState } from "react"
 
 import queryConferenceList from '../api/OngoingList.js'
 import './UpcomingMeetings.scss'
+import { chevronDownOutline, trash } from "ionicons/icons";
 
 const UpcomingMeetings: React.FC = () =>{
     const [meetings, setMeetings] = useState([]);
@@ -83,18 +84,24 @@ const UpcomingMeetings: React.FC = () =>{
     const handleEndConference = (meeting:any) => {
       
     }
+
+    const handleDeleteMeeting = () => {
+      
+    }
     
     return (
-    <IonContent> 
-        <IonCard className="container-box">
+    <IonContent className="container-box"> 
+        <IonCard className="container-card">
             <IonCardHeader style={{borderBottom: '1px solid black'}}>
                 <IonCardTitle style={{fontSize:'1.3rem'}}>Ongoing/Upcoming Meetings</IonCardTitle>
             </IonCardHeader>
             <IonCardContent>
             {meetings.map((meeting) => (
                 <IonCard className="meeting-detail-container" key={meeting.id}>
-                    <IonCardHeader>
-                        <IonCardTitle style={{color:'#fff', fontSize: '20px'}}>{meeting.subject}</IonCardTitle>
+                    <IonCardHeader style={{display:'flex', flexDirection:'row'}}>
+                        <IonCardTitle style={{color:'#fff', fontSize: '20px', flex:'1'}}>{meeting.subject}</IonCardTitle>
+                        <IonIcon icon={chevronDownOutline} style={{fontSize:'1.3rem', marginRight:'10px'}} color="light" />
+                        <IonIcon icon={trash} style={{fontSize:'1.3rem', marginLeft:'10px'}} color="light" onClick={handleDeleteMeeting} />
                     </IonCardHeader>
                     <IonCardContent className="meeting-details ">
                         <IonText>Start Time: {convertUTCMillisecondsToDate(meeting.startTime).formattedTime} </IonText><br />
