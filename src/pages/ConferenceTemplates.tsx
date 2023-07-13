@@ -247,10 +247,10 @@ const ConferenceTemplates: React.FC = () => {
     addContacts: any
   ) => {
     const newTemplate = {
-      id: templates.length + 1,
-      title: subject,
-      duration: duration + ' minutes',
-      participantNum: parseInt(num),
+      TemplateId: templates.length + 1,
+      TemplateName: subject,
+      Length: duration + ' minutes',
+      Parties: parseInt(num),
       participants: addContacts,
     };
 
