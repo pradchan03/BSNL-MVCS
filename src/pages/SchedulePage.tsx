@@ -17,7 +17,7 @@ import {
   IonHeader,
   getConfig,
 } from '@ionic/react';
-import { arrowBack, arrowForward, options, search } from 'ionicons/icons';
+import { arrowBack, arrowForward, search } from 'ionicons/icons';
 
 import './SchedulePage.scss';
 
@@ -102,7 +102,7 @@ const SchedulePage: React.FC<SchedulePageProps> = ({
         </IonToolbar>
       </IonHeader>
 
-      <IonContent fullscreen={true}>
+      <IonContent>
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">Dashboard</IonTitle>
@@ -128,16 +128,6 @@ const SchedulePage: React.FC<SchedulePageProps> = ({
           )}
         </IonToolbar>        
         <DashboardContents viewHistory={viewHistory} />
-        {/* <SessionList
-          schedule={schedule}
-          listType={segment}
-          hide={segment === 'favorites'}
-        />
-        <SessionList
-          schedule={favoritesSchedule}
-          listType={segment}
-          hide={segment === 'all'}
-        /> */}
       </IonContent>
       <ShareSocialFab 
       label='New'
