@@ -70,6 +70,14 @@ const inputStyles = {
     const participantNumInt = parseInt(participantNum, 10)
 
     const handleScheduleClick = () => {
+
+      setSubject('')
+      setDate('')
+      setTimeValue('')
+      setDurationValue('')
+      setParticipantNum('')
+      setContacts([])
+      setGroups([])
       
       const durationInMinutes = parseInt(durationValue, 10)
       const durationInMilliSeconds = durationInMinutes * 60 * 1000;
