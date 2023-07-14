@@ -66,7 +66,7 @@ const ModalCall: React.FC<ModalCallProps> = ({
             style={inputStyles}
             type="text"
             value={name}
-            onIonChange={(e) => setName(e.detail.value! as string)}
+            onIonInput={(e) => setName(e.detail.value! as string)}
           ></IonInput>
         </IonItem>
         <IonItem>
@@ -75,7 +75,7 @@ const ModalCall: React.FC<ModalCallProps> = ({
             style={inputStyles}
             type='tel'
             value={phoneNumber}
-            onIonChange={(e) => setPhoneNumber(e.detail.value! as number)}
+            onIonInput={(e) => setPhoneNumber(e.detail.value! as number)}
           ></IonInput>
         </IonItem>
         <IonItem>
@@ -84,7 +84,7 @@ const ModalCall: React.FC<ModalCallProps> = ({
             style={inputStyles}
             type="tel"
             value={smsPhoneNumber}
-            onIonChange={(e) => setSmsPhoneNumber(e.detail.value! as number)}
+            onIonInput={(e) => setSmsPhoneNumber(e.detail.value! as number)}
           ></IonInput>
         </IonItem>
         <IonItem>
@@ -93,7 +93,7 @@ const ModalCall: React.FC<ModalCallProps> = ({
             style={inputStyles}
             type="email"
             value={emailId}
-            onIonChange={(e) => setEmailId(e.detail.value! as string)}
+            onIonInput={(e) => setEmailId(e.detail.value! as string)}
           ></IonInput>
         </IonItem>
         <IonGrid>

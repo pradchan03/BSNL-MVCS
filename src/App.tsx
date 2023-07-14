@@ -38,17 +38,15 @@ import {
   setUsername,
   loadUserData,
 } from './data/user/user.actions';
-import Account from './pages/Settings';
 import LoginPage from './pages/LoginPage';
 import Signup from './pages/Signup';
 import Support from './pages/Support';
-import HomeOrTutorial from './components/HomeOrTutorial';
 import { Schedule } from './models/Schedule';
 import RedirectToLogin from './components/RedirectToLogin';
 import Contacts from './components/Contacts';
 import InstantConf from './components/InstantConf';
 import Settings from './pages/Settings';
-import ConferenceTemplates from './pages/ConferenceTemplates';
+import ScheduleConfirmation from './pages/ScheduleConfirmation';
 
 setupIonicReact();
 
@@ -107,6 +105,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
             <Route path="/support" component={Support} />
             <Route path="/contacts" component={Contacts} exact />
             <Route path="/instant-conf" component={InstantConf} exact />
+            <Route path="/schedule-confirmation" component={ScheduleConfirmation} exact />
 
             <Route
               path="/logout"

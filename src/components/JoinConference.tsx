@@ -49,7 +49,7 @@ const JoinConference = ({onBackClick}) => {
                 <IonInput
                   type="text"
                   value={confID}
-                  onIonChange={(event) => setConfID(event.detail.value)}
+                  onIonInput={(event) => setConfID(event.detail.value)}
                 />
                 <IonNote slot="helper">Enter meeting ID</IonNote>
               </IonItem>
@@ -62,7 +62,7 @@ const JoinConference = ({onBackClick}) => {
                 <IonInput
                   type={showPassword ? 'text' : 'password'}
                   value={password}
-                  onIonChange={(event) => setPassword(event.detail.value)}
+                  onIonInput={(event) => setPassword(event.detail.value)}
                 />
                 <IonButton
                   className="visibility-button"

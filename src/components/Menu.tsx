@@ -47,6 +47,7 @@ const routes = {
   loggedInPages: [
     { title: 'Settings', path: '/settings', icon: settings },
     { title: 'Support', path: '/support', icon: help },
+    { title: 'Logout', path: '/logout', icon: logOut }
   ],
 };
 
@@ -84,10 +85,9 @@ const Menu: React.FC<MenuProps> = ({
           }
         }
   
-        return null; // Return null if the cookie is not found
+        return null;
       }
       const token = getCookie("user");
-      // console.log(cookieValue);
       console.log(Logout(token));
       function clearAllCookies() {
         var cookies = document.cookie.split(":");
@@ -102,29 +102,43 @@ const Menu: React.FC<MenuProps> = ({
       }
       clearAllCookies();
       history.push("/");
-    console.log("clicked")
   }
   
 
   function renderlistItems(list: Pages[]) {
     return list
       .filter((route) => !!route.path)
-      .map((p) => (
-        <IonMenuToggle key={p.title} auto-hide="false">
-          <IonItem
-            detail={false}
-            routerLink={p.path}
-            routerDirection="none"
-            className={
-              location.pathname.startsWith(p.path) ? 'selected' : undefined
-            }
-          >
-            <IonIcon slot="start" icon={p.icon} />
-            <IonLabel>{p.title}</IonLabel>
-          </IonItem>
-        </IonMenuToggle>
-      ));
-      
+      .map((p) => {
+        if (p.title === 'Logout') {
+          return (
+            <IonMenuToggle key={p.title} auto-hide="false">
+              <IonItem
+                detail={false}
+                onClick={handleLogout}
+                routerDirection="root"
+                className={location.pathname.startsWith(p.path) ? 'selected' : undefined}
+              >
+                <IonIcon color='danger' slot="start" icon={p.icon} />
+                <IonLabel color='danger'>{p.title}</IonLabel>
+              </IonItem>
+            </IonMenuToggle>
+          );
+        } else {
+          return (
+            <IonMenuToggle key={p.title} auto-hide="false">
+              <IonItem
+                detail={false}
+                routerLink={p.path}
+                routerDirection="none"
+                className={location.pathname.startsWith(p.path) ? 'selected' : undefined}
+              >
+                <IonIcon slot="start" icon={p.icon} />
+                <IonLabel>{p.title}</IonLabel>
+              </IonItem>
+            </IonMenuToggle>
+          );
+        }
+      });
   }
 
   return (
@@ -137,13 +151,6 @@ const Menu: React.FC<MenuProps> = ({
         <IonList lines="none">
           <IonListHeader>Account</IonListHeader>
           {renderlistItems(routes.loggedInPages)}
-            <IonItem
-              detail={false}
-              onClick={handleLogout}
-            >
-            <IonIcon color='danger' slot="start" icon={logOut} />
-            <IonLabel color='danger'>Logout</IonLabel>
-            </IonItem>
         </IonList>
       </IonContent>
     </IonMenu>

@@ -128,7 +128,7 @@ const Settings: React.FC = () => {
             type="password"
             placeholder="Enter Current Password"
             value={currentPassword}
-            onIonChange={(e) => setCurrentPassword(e.detail.value! as string)}
+            onIonInput={(e) => setCurrentPassword(e.detail.value! as string)}
           />
           </div>
           <div className='ion-padding change-password-item'>
@@ -138,7 +138,7 @@ const Settings: React.FC = () => {
             type="password"
             placeholder="Type New Password"
             value={newPassword}
-            onIonChange={(e) => setNewPassword(e.detail.value! as string)}
+            onIonInput={(e) => setNewPassword(e.detail.value! as string)}
           />
           </div>
           <div className='ion-padding change-password-item'>
@@ -148,7 +148,7 @@ const Settings: React.FC = () => {
             type="password"
             placeholder='Retype New Password'
             value={confirmNewPassword}
-            onIonChange={(e) => setConfirmNewPassword(e.detail.value! as string)}
+            onIonInput={(e) => setConfirmNewPassword(e.detail.value! as string)}
           />
           </div>
           <IonButton className='ion-margin' expand="block" style={{width:'70vw'}} onClick={handlePasswordSaveClick}>

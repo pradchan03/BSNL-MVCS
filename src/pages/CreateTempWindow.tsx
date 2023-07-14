@@ -50,8 +50,6 @@ const DetailsModal: React.FC<DetailsModalProps> = ({ isOpen, onCancel, onSave })
     return enterAnimation(baseEl).direction('reverse');
   };
 
-  //Used to clear the Modal after each save
-
   useEffect(() => {
     if (isOpen) {
       setSubject('');
@@ -79,7 +77,7 @@ const DetailsModal: React.FC<DetailsModalProps> = ({ isOpen, onCancel, onSave })
         <IonContent className='ion-padding'>
             <IonItem>
             <IonLabel position="stacked"><b>Subject</b></IonLabel>
-            <IonInput style={inputStyles} className='large-input' type="text" placeholder='Template name' value={subject} onIonChange={(event) => setSubject(event.detail.value! as string)} />
+            <IonInput style={inputStyles} className='large-input' type="text" placeholder='Template name' value={subject} onIonInput={(event) => setSubject(event.detail.value! as string)} />
             </IonItem>
             <IonItem className='item'>
           <IonLabel position='stacked'><b>Duration</b></IonLabel>

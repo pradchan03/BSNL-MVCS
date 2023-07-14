@@ -24,6 +24,7 @@ import React, { useState } from 'react';
 import './CreateConference.scss'
 import { add, closeCircle, time } from 'ionicons/icons';
 import createconference from '../api/CreateConference.js'
+import { useHistory } from 'react-router';
 
 const inputStyles = {
   border: '1px solid #d9d9d9',
@@ -64,6 +65,8 @@ const inputStyles = {
 
       return { hour, minutes}
     }
+
+    const history = useHistory();
 
     const parsedDate = parseDate(date);
     const parsedTime = parseTime(timeValue);
@@ -120,6 +123,8 @@ const inputStyles = {
       }).catch((err)=>{
         console.log(err)
       })
+
+      history.replace('/schedule-confirmation');
     }
 
     const handleAddContactGroup = () => {
@@ -175,7 +180,7 @@ const inputStyles = {
             value={subject}
             style={inputStyles}
             placeholder="Enter subject"
-            onIonChange={(event) => setSubject(event.detail.value! as string)}
+            onIonInput={(event) => setSubject(event.detail.value! as string)}
           />
         </IonItem>
         <IonItem className='item'>
@@ -184,7 +189,7 @@ const inputStyles = {
             value={date}
             style={inputStyles}
             type="date"
-            onIonChange={(event) => setDate(event.detail.value! as string)}
+            onIonInput={(event) => setDate(event.detail.value! as string)}
           />
         </IonItem>
         <IonItem className='item'>
@@ -194,7 +199,7 @@ const inputStyles = {
             type="time"
             value={timeValue}
             placeholder="HH:MM"
-            onIonChange={(event) => setTimeValue(event.detail.value! as string)}
+            onIonInput={(event) => setTimeValue(event.detail.value! as string)}
           />
         </IonItem>
         <IonItem className='item'>

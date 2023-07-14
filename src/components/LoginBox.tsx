@@ -3,8 +3,6 @@ import { IonIcon } from '@ionic/react';
 import {eye , eyeOff} from "ionicons/icons"
 import { IonText, IonGrid, IonCol, IonRow, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonInput, IonItem, IonLabel, IonNote } from '@ionic/react';
 
-// const Login = require("../api/Login.js")
-
 import Login from "../api/Login.js";
 import { useHistory } from 'react-router';
 
@@ -56,7 +54,7 @@ const LoginBox = ({ onJoinConferenceClick, setLoggedIn }) => {
                 <IonInput
                   type="text"
                   value={username}
-                  onIonChange={(event) => setUsername(event.detail.value! as string)}
+                  onIonInput={(event) => setUsername(event.detail.value! as string)}
                 />
                 <IonNote slot="helper">Enter a valid username</IonNote>
               </IonItem>
@@ -69,7 +67,7 @@ const LoginBox = ({ onJoinConferenceClick, setLoggedIn }) => {
                 <IonInput
                   type={showPassword ? 'text' : 'password'}
                   value={password}
-                  onIonChange={(event) => setPassword(event.detail.value! as string)}
+                  onIonInput={(event) => setPassword(event.detail.value! as string)}
                 />
                 <IonButton
                   className="visibility-button"
@@ -102,7 +100,7 @@ const LoginBox = ({ onJoinConferenceClick, setLoggedIn }) => {
             </IonCol>
           </IonRow>
           <IonRow>
-            <IonCol size='12'>
+            <IonCol className='ion-no-padding'>
               <IonLabel color='medium'>Use Conference ID to Join Conference</IonLabel>
             </IonCol>
           </IonRow>
