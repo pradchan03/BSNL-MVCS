@@ -1,9 +1,28 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IonModal, IonButton, IonContent, IonInput, IonItem, IonLabel, IonCard, IonCardContent, createAnimation, IonHeader, IonToolbar, IonTitle, IonButtons, IonSelect, IonSelectOption, IonGrid, IonRow, IonCol } from '@ionic/react';
+import {
+  IonModal,
+  IonButton,
+  IonContent,
+  IonInput,
+  IonItem,
+  IonLabel,
+  IonCard,
+  IonCardContent,
+  createAnimation,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButtons,
+  IonSelect,
+  IonSelectOption,
+  IonGrid,
+  IonRow,
+  IonCol,
+} from '@ionic/react';
 
 import API from '../api/API.js';
 
-import './ConferenceTemplates.scss'
+import './ConferenceTemplates.scss';
 
 interface DetailsModalProps {
   isOpen: boolean;
@@ -11,7 +30,6 @@ interface DetailsModalProps {
 }
 
 const DetailsModal: React.FC<DetailsModalProps> = ({ isOpen, onCancel }) => {
-
   const inputStyles = {
     border: '1px solid #d9d9d9',
     borderRadius: '4px',
@@ -21,11 +39,10 @@ const DetailsModal: React.FC<DetailsModalProps> = ({ isOpen, onCancel }) => {
 
   const [subject, setSubject] = useState<string>('');
   const [duration, setDuration] = useState<string>('');
-  const [num, setNum] = useState<string>('')
-  const [addContacts, setAddContacts] = useState<string>('')
-  
-  const modal = useRef<HTMLIonModalElement>(null);
+  const [num, setNum] = useState<string>('');
+  const [addContacts, setAddContacts] = useState<string>('');
 
+  const modal = useRef<HTMLIonModalElement>(null);
 
   const enterAnimation = (baseEl: HTMLElement) => {
     const root = baseEl.shadowRoot;
@@ -62,20 +79,19 @@ const DetailsModal: React.FC<DetailsModalProps> = ({ isOpen, onCancel }) => {
   }, [isOpen]);
 
   const handleSave = () => {
-    const durationInt = parseInt(duration)
-    const participants = parseInt(num, 10)
-    console.log(participants)
+    const durationInt = parseInt(duration);
+    const participants = parseInt(num, 10);
+    console.log(participants);
 
-    const durationInMilliseconds =
-      durationInt * 60 * 1000;
+    const durationInMilliseconds = durationInt * 60 * 1000;
 
     function getCookie(cookieName: any) {
       const cookieString = document.cookie;
-      const cookies = cookieString.split(":");
+      const cookies = cookieString.split(':');
 
       for (let i = 0; i < cookies.length; i++) {
         const cookie = cookies[i].trim();
-        if (cookie.startsWith(cookieName + "=")) {
+        if (cookie.startsWith(cookieName + '=')) {
           return cookie.substring(cookieName.length + 1);
         }
       }
@@ -83,7 +99,7 @@ const DetailsModal: React.FC<DetailsModalProps> = ({ isOpen, onCancel }) => {
       return null; // Return null if the cookie is not found
     }
 
-    var token = getCookie("user");
+    var token = getCookie('user');
 
     API.createconferencetemplate(
       token,
@@ -91,7 +107,7 @@ const DetailsModal: React.FC<DetailsModalProps> = ({ isOpen, onCancel }) => {
       durationInMilliseconds,
       participants,
       48,
-      "en_US",
+      'en_US',
       subject
     )
       .then((res: any) => {
@@ -100,28 +116,44 @@ const DetailsModal: React.FC<DetailsModalProps> = ({ isOpen, onCancel }) => {
 
       .catch((err: any) => {
         console.log(err);
-        alert("Error in creating template. Please try again.");
+        alert('Error in creating template. Please try again.');
       });
     onCancel();
   };
 
   return (
-    <IonModal ref={modal} isOpen={isOpen}  enterAnimation={enterAnimation} leaveAnimation={leaveAnimation}>
-        <IonHeader>
-            <IonToolbar>
-                <IonTitle>Create Template</IonTitle>
-                <IonButtons slot="end">
-                    <IonButton onClick={onCancel}>Close</IonButton>
-                </IonButtons>
-            </IonToolbar>
-        </IonHeader>
-        <IonContent className='ion-padding'>
-            <IonItem>
-            <IonLabel position="stacked"><b>Subject</b></IonLabel>
-            <IonInput style={inputStyles} className='large-input' type="text" placeholder='Template name' value={subject} onIonInput={(event) => setSubject(event.detail.value! as string)} />
-            </IonItem>
-            <IonItem className='item'>
-          <IonLabel position='stacked'><b>Duration</b></IonLabel>
+    <IonModal
+      ref={modal}
+      isOpen={isOpen}
+      enterAnimation={enterAnimation}
+      leaveAnimation={leaveAnimation}
+    >
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Create Template</IonTitle>
+          <IonButtons slot="end">
+            <IonButton onClick={onCancel}>Close</IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent className="ion-padding">
+        <IonItem>
+          <IonLabel position="stacked">
+            <b>Subject</b>
+          </IonLabel>
+          <IonInput
+            style={inputStyles}
+            className="large-input"
+            type="text"
+            placeholder="Template name"
+            value={subject}
+            onIonInput={(event) => setSubject(event.detail.value! as string)}
+          />
+        </IonItem>
+        <IonItem className="item">
+          <IonLabel position="stacked">
+            <b>Duration</b>
+          </IonLabel>
           <IonSelect
             style={inputStyles}
             placeholder="Select duration"
@@ -135,50 +167,67 @@ const DetailsModal: React.FC<DetailsModalProps> = ({ isOpen, onCancel }) => {
             <IonSelectOption value="120">2 hours</IonSelectOption>
           </IonSelect>
         </IonItem>
-            <IonItem>
-            <IonLabel position='stacked'><b>Participants</b></IonLabel>
-            <IonSelect
-                style={inputStyles}
-                placeholder="Number of Participants"
-                value={num} onIonChange={(event) => setNum(event.detail.value! as string)}
-            >
-                <IonSelectOption value="1">1</IonSelectOption>
-                <IonSelectOption value="2">2</IonSelectOption>
-                <IonSelectOption value="3">3</IonSelectOption>
-                <IonSelectOption value="4">4</IonSelectOption>
-                <IonSelectOption value="5">5</IonSelectOption>
-                <IonSelectOption value="6">6</IonSelectOption>
-                <IonSelectOption value="7">7</IonSelectOption>
-            </IonSelect>
-            </IonItem>
-            <IonItem className='item'>
-            <IonLabel position='stacked'><b>Add Contacts</b></IonLabel>
-            <IonSelect
-                style={inputStyles}
-                value={addContacts} onIonChange={(event) => setAddContacts(event.detail.value! as string)}
-                placeholder="Select contacts"
-                multiple={true}
-            >
-                <IonSelectOption value="C1">Contacts 1</IonSelectOption>
-                <IonSelectOption value="C2">Contacts 2</IonSelectOption>
-                <IonSelectOption value="C3">Contacts 3</IonSelectOption>
-            </IonSelect>
-            </IonItem>
-            <IonGrid>
-              <IonRow>
-                <IonCol>
-                  <IonButton className='template-btn' expand="block" onClick={handleSave}>
-                  Save
-                  </IonButton>
-                </IonCol>
-                <IonCol>
-                  <IonButton className='template-btn' expand="block" color="danger" onClick={onCancel}>
-                  Cancel
-                  </IonButton>
-                </IonCol>
-              </IonRow>
-            </IonGrid>
-        </IonContent>
+        <IonItem>
+          <IonLabel position="stacked">
+            <b>Participants</b>
+          </IonLabel>
+          <IonSelect
+            style={inputStyles}
+            placeholder="Number of Participants"
+            value={num}
+            onIonChange={(event) => setNum(event.detail.value! as string)}
+          >
+            <IonSelectOption value="1">1</IonSelectOption>
+            <IonSelectOption value="2">2</IonSelectOption>
+            <IonSelectOption value="3">3</IonSelectOption>
+            <IonSelectOption value="4">4</IonSelectOption>
+            <IonSelectOption value="5">5</IonSelectOption>
+            <IonSelectOption value="6">6</IonSelectOption>
+            <IonSelectOption value="7">7</IonSelectOption>
+          </IonSelect>
+        </IonItem>
+        <IonItem className="item">
+          <IonLabel position="stacked">
+            <b>Add Contacts</b>
+          </IonLabel>
+          <IonSelect
+            style={inputStyles}
+            value={addContacts}
+            onIonChange={(event) =>
+              setAddContacts(event.detail.value! as string)
+            }
+            placeholder="Select contacts"
+            multiple={true}
+          >
+            <IonSelectOption value="C1">Contacts 1</IonSelectOption>
+            <IonSelectOption value="C2">Contacts 2</IonSelectOption>
+            <IonSelectOption value="C3">Contacts 3</IonSelectOption>
+          </IonSelect>
+        </IonItem>
+        <IonGrid>
+          <IonRow>
+            <IonCol>
+              <IonButton
+                className="template-btn"
+                expand="block"
+                onClick={handleSave}
+              >
+                Save
+              </IonButton>
+            </IonCol>
+            <IonCol>
+              <IonButton
+                className="template-btn"
+                expand="block"
+                color="danger"
+                onClick={onCancel}
+              >
+                Cancel
+              </IonButton>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+      </IonContent>
     </IonModal>
   );
 };
