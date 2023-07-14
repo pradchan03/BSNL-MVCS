@@ -17,6 +17,9 @@ import { chevronDownOutline, chevronUpOutline, trash } from 'ionicons/icons';
 import queryConferenceList from '../api/OngoingList.js';
 import './UpcomingMeetings.scss';
 
+
+
+
 const UpcomingMeetings: React.FC<{ searchSubject: string }> = ({
   searchSubject,
 }) => {
