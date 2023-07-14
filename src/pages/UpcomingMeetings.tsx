@@ -1,24 +1,20 @@
 import React, { useState } from 'react';
 import {
   IonButton,
-  IonButtons,
   IonCard,
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
+  IonCol,
   IonContent,
-  IonDatetime,
+  IonGrid,
   IonIcon,
-  IonRefresher,
+  IonRow,
   IonText,
-  IonToolbar,
 } from '@ionic/react';
 import { chevronDownOutline, chevronUpOutline, trash } from 'ionicons/icons';
-import queryConferenceList from '../api/OngoingList.js';
+import API from '../api/API.js'
 import './UpcomingMeetings.scss';
-
-
-
 
 const UpcomingMeetings: React.FC<{ searchSubject: string }> = ({
   searchSubject,
@@ -28,23 +24,24 @@ const UpcomingMeetings: React.FC<{ searchSubject: string }> = ({
 
   const currentTimeUTC = Date.now()
 
-  React.useEffect(() => {
-    function getCookie(cookieName: string) {
-      const cookieString = document.cookie;
-      const cookies = cookieString.split(':');
+  function getCookie(cookieName: string) {
+    const cookieString = document.cookie;
+    const cookies = cookieString.split(':');
 
-      for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i].trim();
-        if (cookie.startsWith(cookieName + '=')) {
-          return cookie.substring(cookieName.length + 1);
-        }
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.startsWith(cookieName + '=')) {
+        return cookie.substring(cookieName.length + 1);
       }
-
-      return null;
     }
 
-    const token = getCookie('user');
-    queryConferenceList(token)
+    return null;
+  }
+
+  const token = getCookie('user');
+
+  React.useEffect(() => {
+    API.queryConferenceList(token)
       .then((res: any) => {
         const meetingArray = Object.values(res)
           .filter((value) => typeof value === 'object')
@@ -55,6 +52,8 @@ const UpcomingMeetings: React.FC<{ searchSubject: string }> = ({
         alert('Could not fetch meeting details. Please try again later.');
       });
   }, []);
+
+  //Conversion Functions
 
   const convertUTCMillisecondsToDate = (utcMilliseconds: any) => {
     // Create a new Date object with the UTC milliseconds
@@ -109,11 +108,41 @@ const UpcomingMeetings: React.FC<{ searchSubject: string }> = ({
     return { hours: hours, minutes: minutes };
   };
 
+  //Handle Functions
+
   const handleJoinConference = (meeting: any) => {
     console.log('Joining meeting:');
   };
 
-  const handleEndConference = (meeting: any) => {};
+  const handleCancelConference = (meeting: any) => {
+      console.log("Removing meeting: ", meeting);
+      API.RemoveConference(token, meeting.conferenceKey.conferenceID, "0")
+        .then((res: any) => {
+          console.log(res);
+          const token = getCookie("user");
+          API.queryConferenceList(token)
+            .then((res: any) => {
+              const meetingArray = Object.values(res)
+                .filter((value) => typeof value === "object")
+                .map((meeting: Object) => ({
+                  ...meeting,
+                  expanded: false,
+                }));
+              setMeetings(meetingArray);
+            })
+            .catch((err: any) => {
+              alert("Could not fetch meeting details. Please try again later.");
+            });
+        })
+        .catch((err: any) => {
+          console.log(err);
+          alert("Could not end meeting. Please try again later.");
+        });
+  };
+
+  const handleEditConference = (meeting: any) => {
+
+  }
 
   const handleFullView = (cardIndex: number) => {
     if (expandedCard === cardIndex) {
@@ -122,10 +151,6 @@ const UpcomingMeetings: React.FC<{ searchSubject: string }> = ({
       setExpandedCard(cardIndex);
     }
   }
-
-  const handleDeleteMeeting = () => {
-
-  };
 
   const filteredMeetings = meetings.filter((meeting) =>
   meeting.subject.toLowerCase().includes(searchSubject.toLowerCase())
@@ -155,12 +180,6 @@ const UpcomingMeetings: React.FC<{ searchSubject: string }> = ({
                   style={{ fontSize: '1.3rem', marginRight: '10px' }}
                   color="light"
                   onClick={() => handleFullView(cardIndex)}
-                />
-                <IonIcon
-                  icon={trash}
-                  style={{ fontSize: '1.3rem', marginLeft: '10px' }}
-                  color="light"
-                  onClick={handleDeleteMeeting}
                 />
               </IonCardHeader>
               <IonCardContent className="meeting-details ">
@@ -202,24 +221,39 @@ const UpcomingMeetings: React.FC<{ searchSubject: string }> = ({
                 {/* <IonText>Participants: {meeting.numParticipants} </IonText><br /> */}
                 <br />
                 {currentTimeUTC > meeting.startTime?
-                <>
+                
                 <IonButton
-                  shape="round"
                   color="success"
-                  style={{ width: '100px', marginRight: '10px' }}
+                  expand='block'
                   onClick={() => handleJoinConference(meeting)}
                 >
                   Join
                 </IonButton>
-                <IonButton
-                  shape="round"
-                  color="danger"
-                  style={{ width: '100px', marginLeft: '10px' }}
-                  onClick={() => handleEndConference(meeting)}
-                >
-                  End Now
-                </IonButton>
-                </>:<></>}
+                :
+                <IonGrid className='ion-no-padding'>
+                  <IonRow className='ion-no-padding'>
+                    <IonCol>
+                      <IonButton
+                        expand='block'
+                        color='dark'
+                        onClick={() => handleCancelConference(meeting)}
+                      >
+                        Cancel 
+                      </IonButton>
+                    </IonCol>
+                    <IonCol>
+                      <IonButton
+                        expand='block'
+                        color='light'
+                        fill='outline'
+                        onClick={() => handleEditConference(meeting)}
+                      >
+                        Edit 
+                      </IonButton>
+                    </IonCol>
+                  </IonRow>
+                </IonGrid>
+                }
               </IonCardContent>
             </IonCard>
           ))}

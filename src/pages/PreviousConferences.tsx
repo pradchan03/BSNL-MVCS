@@ -26,30 +26,29 @@ const PreviousConferences: React.FC = () => {
 
 
     return (
-
-        // <IonContent scrollEvents={true}>
-            <IonCard className="container-box">
-                <IonCardHeader style={{borderBottom: '1px solid black'}}>
+    <IonContent className="container-box">
+        <IonCard className="container-card">
+            <IonCardHeader style={{borderBottom: '1px solid black'}}>
                 <IonCardTitle style={{fontSize:'1.5rem'}}>Previous Conferences</IonCardTitle>
-                </IonCardHeader>
-                <IonCardContent>
-                {conferences.map((conference) => (
-                <IonCard className="meeting-detail-container" key={conference.id}>
-                <IonCardHeader>
-                    <IonCardTitle style={{color:'#fff', fontSize: '20px'}}>{conference.subject}</IonCardTitle>
-                </IonCardHeader>
-                <IonCardContent className="meeting-details ">
-                    <IonText>Creator: {conference.creator}</IonText><br />
-                    <IonText>Conference ID: {conference.conferenceId}</IonText><br />
-                    <IonText>No of Participants: {conference.participants}</IonText><br />
-                    <IonText>Start Time: {conference.startTime}</IonText><br />
-                    <IonText>Duration: {conference.duration}</IonText>
-                </IonCardContent>
-                </IonCard>
-            ))}
-                </IonCardContent>
+            </IonCardHeader>
+            <IonCardContent>
+            {conferences.map((conference) => (
+            <IonCard className="meeting-detail-container" key={conference.id}>
+            <IonCardHeader>
+                <IonCardTitle style={{color:'#fff', fontSize: '20px'}}>{conference.subject}</IonCardTitle>
+            </IonCardHeader>
+            <IonCardContent className="meeting-details ">
+                <IonText>Creator: {conference.creator}</IonText><br />
+                <IonText>Conference ID: {conference.conferenceId}</IonText><br />
+                <IonText>No of Participants: {conference.participants}</IonText><br />
+                <IonText>Start Time: {conference.startTime}</IonText><br />
+                <IonText>Duration: {conference.duration}</IonText>
+            </IonCardContent>
             </IonCard>
-        // </IonContent>    
+             ))}
+            </IonCardContent>
+        </IonCard>
+    </IonContent>    
     )
 }
 

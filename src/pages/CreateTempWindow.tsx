@@ -1,21 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { IonModal, IonButton, IonContent, IonInput, IonItem, IonLabel, IonCard, IonCardContent, createAnimation, IonHeader, IonToolbar, IonTitle, IonButtons, IonSelect, IonSelectOption, IonGrid, IonRow, IonCol } from '@ionic/react';
+
+import API from '../api/API.js';
+
 import './ConferenceTemplates.scss'
 
 interface DetailsModalProps {
   isOpen: boolean;
   onCancel: () => void;
-  onSave: (subject: string, duration: string, num: string, addContacts: string) => void;
 }
 
-const DetailsModal: React.FC<DetailsModalProps> = ({ isOpen, onCancel, onSave }) => {
+const DetailsModal: React.FC<DetailsModalProps> = ({ isOpen, onCancel }) => {
 
   const inputStyles = {
     border: '1px solid #d9d9d9',
     borderRadius: '4px',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
     textIndent: '12px',
-    // Add any other styles as needed
   };
 
   const [subject, setSubject] = useState<string>('');
@@ -24,6 +25,7 @@ const DetailsModal: React.FC<DetailsModalProps> = ({ isOpen, onCancel, onSave })
   const [addContacts, setAddContacts] = useState<string>('')
   
   const modal = useRef<HTMLIonModalElement>(null);
+
 
   const enterAnimation = (baseEl: HTMLElement) => {
     const root = baseEl.shadowRoot;
@@ -60,7 +62,46 @@ const DetailsModal: React.FC<DetailsModalProps> = ({ isOpen, onCancel, onSave })
   }, [isOpen]);
 
   const handleSave = () => {
-    onSave(subject, duration, num, addContacts,);
+    const durationInt = parseInt(duration)
+    const participants = parseInt(num, 10)
+    console.log(participants)
+
+    const durationInMilliseconds =
+      durationInt * 60 * 1000;
+
+    function getCookie(cookieName: any) {
+      const cookieString = document.cookie;
+      const cookies = cookieString.split(":");
+
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(cookieName + "=")) {
+          return cookie.substring(cookieName.length + 1);
+        }
+      }
+
+      return null; // Return null if the cookie is not found
+    }
+
+    var token = getCookie("user");
+
+    API.createconferencetemplate(
+      token,
+      0,
+      durationInMilliseconds,
+      participants,
+      48,
+      "en_US",
+      subject
+    )
+      .then((res: any) => {
+        console.log(res);
+      })
+
+      .catch((err: any) => {
+        console.log(err);
+        alert("Error in creating template. Please try again.");
+      });
     onCancel();
   };
 

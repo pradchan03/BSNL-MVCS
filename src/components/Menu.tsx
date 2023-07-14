@@ -34,7 +34,7 @@ import {
 import { connect } from '../data/connect';
 import './Menu.css';
 
-import Logout from '../api/Logout.js'
+import API from '../api/API.js'
 
 const routes = {
   appPages: [
@@ -88,7 +88,7 @@ const Menu: React.FC<MenuProps> = ({
         return null;
       }
       const token = getCookie("user");
-      console.log(Logout(token));
+      console.log(API.Logout(token));
       function clearAllCookies() {
         var cookies = document.cookie.split(":");
   

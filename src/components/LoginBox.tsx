@@ -3,7 +3,7 @@ import { IonIcon } from '@ionic/react';
 import {eye , eyeOff} from "ionicons/icons"
 import { IonText, IonGrid, IonCol, IonRow, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonInput, IonItem, IonLabel, IonNote } from '@ionic/react';
 
-import Login from "../api/Login.js";
+import API from "../api/API.js";
 import { useHistory } from 'react-router';
 
 const LoginBox = ({ onJoinConferenceClick, setLoggedIn }) => {
@@ -22,7 +22,7 @@ const LoginBox = ({ onJoinConferenceClick, setLoggedIn }) => {
       console.log("Password:", password);
       document.cookie = "";
 
-    Login(username, password, "WEB")
+    API.Login(username, password, "WEB")
       .then((res) => {
         console.log(res);
 

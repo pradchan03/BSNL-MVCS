@@ -19,11 +19,13 @@ import {
   IonCol,
   IonAlert,
   IonChip,
+  IonRefresher,
+  IonRefresherContent,
 } from '@ionic/react';
 import React, { useState } from 'react';
 import './CreateConference.scss'
 import { add, closeCircle, time } from 'ionicons/icons';
-import createconference from '../api/CreateConference.js'
+import API from '../api/API.js'
 import { useHistory } from 'react-router';
 
 const inputStyles = {
@@ -108,7 +110,7 @@ const inputStyles = {
 
       var token = getCookie("user");
 
-      createconference(
+      API.createconference(
         token,
         durationInMilliSeconds,
         participantNumInt,
@@ -160,6 +162,12 @@ const inputStyles = {
       setParticipants(updatedParticipants);
     };
 
+    const doRefresh = (event) => {
+      setTimeout(() => {
+        event.detail.complete(); 
+      }, 2000); 
+    };
+
   return (
     <IonPage>
       <IonHeader translucent={true}>
@@ -169,6 +177,9 @@ const inputStyles = {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen={false} className='ion-padding'>
+        <IonRefresher slot="fixed" onIonRefresh={doRefresh}>
+            <IonRefresherContent></IonRefresherContent>
+          </IonRefresher>
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">Create Conference</IonTitle>
@@ -305,7 +316,6 @@ const inputStyles = {
               type: 'text',
               placeholder: 'Name',
               value: externalParticipantName.toString,
-              handler: (event) => setExternalParticipantName(event.detail.value! as string)
             },
             {
               name: 'phone',
