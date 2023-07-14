@@ -21,6 +21,7 @@ const UpcomingMeetings: React.FC<{ searchSubject: string }> = ({
 }) => {
   const [meetings, setMeetings] = useState<any[]>([]);
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
+  const [emptyList, setEmptyList] = useState(false)
 
   const currentTimeUTC = Date.now()
 
@@ -47,6 +48,12 @@ const UpcomingMeetings: React.FC<{ searchSubject: string }> = ({
           .filter((value) => typeof value === 'object')
           .map((meeting) => meeting);
         setMeetings(meetingArray);
+        if(res.message === 'no_upcoming_meetings'){
+          setEmptyList(true)
+        }
+        else{
+          setEmptyList(false)
+        }
       })
       .catch((err: any) => {
         alert('Could not fetch meeting details. Please try again later.');
@@ -165,6 +172,9 @@ const UpcomingMeetings: React.FC<{ searchSubject: string }> = ({
           </IonCardTitle>
         </IonCardHeader>
         <IonCardContent>
+          {emptyList && 
+          <IonText className='empty-message'>No Upcoming Meetings</IonText>
+          }
           {filteredMeetings.map((meeting, cardIndex) => (
             <IonCard className="meeting-detail-container" key={cardIndex}>
               <IonCardHeader style={{ display: 'flex', flexDirection: 'row' }}>
