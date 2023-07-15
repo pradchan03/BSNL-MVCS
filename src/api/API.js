@@ -37,7 +37,7 @@ class API {
           },
           isAscend: false,
           pageIndex: 0,
-          pageSize: 15,
+          pageSize: 20,
         }),
       })
         .then((response) => response.json())
@@ -68,8 +68,8 @@ class API {
           .then((data) => data);
     }
 
-    static createconferencetemplate(token, templateId, length, size, timeZone, language, templateName) {
-        const url = `${URL}/user/conferencetemplate`;
+    static createconferencetemplate(token, templateIds, lengths, sizes, timeZones, languages, templateNames) {
+        const url = `${URL}/user/createconferencetemplate`;
     
         return fetch(url, {
           method: "POST",
@@ -78,13 +78,14 @@ class API {
           },
           body: JSON.stringify({
             token: `${token}`,
-            templateId: `${templateId}`,
-            length: `${length}`,
-            size: `${size}`,
-            timeZone: `${timeZone}`,
-            language: `${language}`,
-            templateName: `${templateName}`,
+            templateID: templateIds,
+            length: lengths,
+            size: sizes,
+            timeZone: timeZones,
+            language: `${languages}`,
+            templateName: `${templateNames}`,
             mediaTypes: `Voice`,
+            isAllowInvite: "True"
           }),
         })
           .then((response) => response.json())
