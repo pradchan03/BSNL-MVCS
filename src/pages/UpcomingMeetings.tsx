@@ -15,6 +15,8 @@ import {
 import { chevronDownOutline, chevronUpOutline, trash } from 'ionicons/icons';
 import API from '../api/API.js'
 import './UpcomingMeetings.scss';
+import { useHistory } from 'react-router';
+import InstantConf from '../components/InstantConf.js';
 
 const UpcomingMeetings: React.FC<{ searchSubject: string }> = ({
   searchSubject,
@@ -24,6 +26,7 @@ const UpcomingMeetings: React.FC<{ searchSubject: string }> = ({
   const [emptyList, setEmptyList] = useState(false)
 
   const currentTimeUTC = Date.now()
+  const history = useHistory();
 
   function getCookie(cookieName: string) {
     const cookieString = document.cookie;
@@ -118,7 +121,7 @@ const UpcomingMeetings: React.FC<{ searchSubject: string }> = ({
   //Handle Functions
 
   const handleJoinConference = (meeting: any) => {
-    console.log('Joining meeting:');
+    history.push('/instant-conf', {meeting})
   };
 
   const handleCancelConference = (meeting: any) => {
@@ -171,7 +174,7 @@ const UpcomingMeetings: React.FC<{ searchSubject: string }> = ({
             Ongoing/Upcoming Meetings
           </IonCardTitle>
         </IonCardHeader>
-        <IonCardContent>
+        <IonCardContent className='scrollable-content'>
           {emptyList && 
           <IonText className='empty-message'>No Upcoming Meetings</IonText>
           }
