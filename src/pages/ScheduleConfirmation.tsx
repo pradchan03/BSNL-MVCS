@@ -19,7 +19,8 @@ import {
 import './ScheduleConfirmation.scss';
 const ScheduleConfirmation: React.FC = () => {
   return (
-    <IonPage>
+    <>
+      {/* <IonPage> */}
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
@@ -110,7 +111,8 @@ const ScheduleConfirmation: React.FC = () => {
           </IonGrid>
         </div>
       </IonContent>
-    </IonPage>
+      {/* </IonPage> */}
+    </>
   );
 };
 
