@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   IonContent,
   IonHeader,
@@ -28,15 +28,50 @@ import ModalCall from './ModalCall';
 import ContactList from './ContactList';
 
 import './InstantConf.css'
-import { useHistory } from 'react-router';
+import { useHistory, useLocation, RouteComponentProps } from 'react-router';
+import API from '../api/API.js'
 
-const InstantConf: React.FC = () => {
+interface LocationState {
+  meeting: any;
+}
+
+const InstantConf: React.FC<RouteComponentProps<any, any, LocationState>> = ({location}) => {
   const [showModal, setShowModal] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [participants, setParticipants] = useState([]);
 
   const history = useHistory();
+
+  const { meeting } = location.state || {};
   const username = localStorage.getItem('userID')
+
+  useEffect(() =>{
+    API.Login(meeting?.conferenceKey.conferenceID , meeting?.chair , "ConferenceID")
+    .then((res) => {
+      console.log("Join Response: ",res);
+
+      if (res.message === "success") {
+        localStorage.setItem('cred',res.token)
+        localStorage.setItem("Conference ID: ", meeting?.conferenceKey.conferenceID)
+
+          // Start the loop function after successful login
+          const loopFunction = setInterval(() => {
+            API.ConferenceInfo(res.token, meeting.conferenceKey.conferenceID, 0)
+              .then((confInfoRes) => {
+                // Process the conference info response here
+                console.log("Conference Info: ", confInfoRes)})},10000)
+
+      } else alert("Invalid Credentials");
+    })
+    .catch((err) => {
+      console.log(err);
+      alert("Something went wrong. Please try again.");
+    });
+    
+    },[]); 
+
+  const token = localStorage.getItem('cred')
+  const confID = localStorage.getItem('Conference ID:')
 
   const handleClose = () => {
     setShowAlert(true);
@@ -44,6 +79,8 @@ const InstantConf: React.FC = () => {
 
   const handleConfirmClose = () => {
     setShowAlert(false);
+    localStorage.setItem('cred',"")
+    localStorage.setItem('Conference ID:',"")
     history.goBack();
   };
 
@@ -60,6 +97,18 @@ const InstantConf: React.FC = () => {
       ...participant,
       onCall: true,
     }));
+    participants.map((participant) => (
+      API.InviteParticipants(token, confID, [{
+        name: participant.name,
+        phone: participant.phoneNumber
+  }] )
+  .then((res) => {
+    console.log(res);})
+  .catch((err) => {
+      console.log(err);
+      alert("Something went wrong. Please try again.");
+    })
+    ))
     setParticipants(updatedParticipants);
   };
 
@@ -112,7 +161,7 @@ const InstantConf: React.FC = () => {
             <IonButtons slot="end">
               <IonButton onClick={handleClose}>Close</IonButton>
             </IonButtons>
-            <IonTitle>{username}'s Conference</IonTitle>
+            <IonTitle>{meeting?.subject ? meeting.subject : `${username}'s Conference`}</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent>

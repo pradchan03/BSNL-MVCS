@@ -15,6 +15,8 @@ import {
   IonCol,
 } from '@ionic/react';
 
+import API from '../api/API.js'
+
 interface ModalCallProps {
   isOpen: boolean;
   onAddParticipant: (name: string, phoneNumber: number, smsPhoneNumber:any, emailId:string) => void;
@@ -31,7 +33,21 @@ const ModalCall: React.FC<ModalCallProps> = ({
   const [phoneNumber, setPhoneNumber] = useState<number>(null);
   const [smsPhoneNumber, setSmsPhoneNumber] = useState<number>(null);
   const [emailId, setEmailId] = useState<string>('');
+  
+  function getCookie(cookieName: any) {
+    const cookieString = document.cookie;
+    const cookies = cookieString.split(":");
 
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.startsWith(cookieName + "=")) {
+        return cookie.substring(cookieName.length + 1);
+      }
+    }
+    return null; // Return null if the cookie is not found
+  }
+
+  var token = getCookie("user");
 
   const handleAddParticipant = () => {
     onAddParticipant(name, phoneNumber,smsPhoneNumber,emailId);

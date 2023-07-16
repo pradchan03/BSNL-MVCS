@@ -46,7 +46,7 @@ const inputStyles = {
     const [groups, setGroups] = useState<string[]>([]);
     const [participants, setParticipants] = useState<string[]>([]);
     const [externalParticipantName, setExternalParticipantName] = useState<string>('');
-    const [externalParticipantPhone, setExternalParticipantPhone] = useState('');
+    const [externalParticipantPhone, setExternalParticipantPhone] = useState<string>('');
     const [showAlert, setShowAlert] = useState(false);
     
     //To convert the start date into day, month and year
@@ -139,14 +139,7 @@ const inputStyles = {
       setShowAlert(true);
     };
 
-    const handleAlertCancel = () => {
-      setShowAlert(false);
-      setExternalParticipantName('');
-      setExternalParticipantPhone('');
-    };
-
-    const handleAlertConfirm = (data: string) => {
-      console.log(externalParticipantName)
+    const handleAlertConfirm = () => {
       if (externalParticipantName && externalParticipantPhone) {
         const participant = `${externalParticipantName} - ${externalParticipantPhone}`;
         setParticipants((prevParticipants) => [...prevParticipants, participant]);
@@ -154,6 +147,12 @@ const inputStyles = {
         setExternalParticipantPhone('');
       }
       setShowAlert(false);
+    };
+
+    const handleAlertCancel = () => {
+      setShowAlert(false);
+      setExternalParticipantName('');
+      setExternalParticipantPhone('');
     };
 
     const handleRemoveParticipant = (index: number) => {
@@ -306,44 +305,47 @@ const inputStyles = {
             </IonChip>
            ))}
            </IonContent>
-           {/* Alert Box */}
-        <IonAlert
-          isOpen={showAlert}
-          header='Add Participant'
-          inputs={[
-            {
-              name: 'name',
-              type: 'text',
-              placeholder: 'Name',
-              value: externalParticipantName.toString,
-            },
-            {
-              name: 'phone',
-              type: 'text',
-              placeholder: 'Phone Number',
-              value: externalParticipantPhone,
-            },
-          ]}
-          buttons={[
-            {
-              text: 'Cancel',
-              role: 'cancel',
-              handler: handleAlertCancel,
-            },
-            {
-              text: 'Add',
-              handler: (data) => handleAlertConfirm(data),
-            },
-          ]}
-        />
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
           <IonFabButton onClick={handleScheduleClick}>
             <IonIcon icon={add} />
           </IonFabButton>
         </IonFab>
+        <IonAlert
+        isOpen={showAlert}
+        header="Enter Details"
+        inputs={[
+          {
+            name: 'Participant Name',
+            type: 'text',
+            placeholder: 'Name',
+            value: externalParticipantName,
+            handler: (value) => setExternalParticipantName(value! as string),
+          },
+          {
+            name: 'Phone Number',
+            type: 'number',
+            placeholder: 'Phone',
+            value: externalParticipantPhone,
+            handler: (value) => setExternalParticipantPhone(value! as string),
+          },
+        ]}
+        buttons={[
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            handler: handleAlertCancel
+          },
+          {
+            text: 'OK',
+            handler: handleAlertConfirm
+          },
+        ]}
+        onDidDismiss={(event) => setShowAlert(false)}
+        />
       </IonContent>
     </IonPage>
   );
 };
 
 export default CreateConference;
+

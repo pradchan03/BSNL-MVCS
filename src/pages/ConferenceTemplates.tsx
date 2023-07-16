@@ -44,18 +44,17 @@ const ConferenceTemplates: React.FC = () => {
     return null; // Return null if the cookie is not found
   };
 
-  const token = getCookie('user');
-
   useEffect(() => {
+    const token = getCookie('user');
     API.ConferenceTemplateList(token)
-      .then((res) => {
+      .then((res: any) => {
         const templateArray = Object.values(res)
           .filter((value) => typeof value === 'object')
           .map((template) => template);
         console.log(templateArray);
         setTemplates(templateArray);
       })
-      .catch((err) => {
+      .catch((err: any) => {
         console.log(
           'Could not fetch template details. Please try again later.'
         );
@@ -68,23 +67,6 @@ const ConferenceTemplates: React.FC = () => {
 
   const handleCancelModal = () => {
     setShowModal(false);
-  };
-
-  const handleSaveDetails = (
-    subject: string,
-    duration: string,
-    num: string,
-    addContacts: any
-  ) => {
-    const newTemplate = {
-      TemplateId: templates.length + 1,
-      TemplateName: subject,
-      Length: duration + ' minutes',
-      Parties: parseInt(num),
-      participants: addContacts,
-    };
-
-    setTemplates((prevTemplates) => [...prevTemplates, newTemplate]);
   };
 
   const doRefresh = (event) => {

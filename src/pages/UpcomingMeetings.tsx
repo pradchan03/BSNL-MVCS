@@ -15,14 +15,18 @@ import {
 import { chevronDownOutline, chevronUpOutline, trash } from 'ionicons/icons';
 import API from '../api/API.js'
 import './UpcomingMeetings.scss';
+import { useHistory } from 'react-router';
+import InstantConf from '../components/InstantConf.js';
 
 const UpcomingMeetings: React.FC<{ searchSubject: string }> = ({
   searchSubject,
 }) => {
   const [meetings, setMeetings] = useState<any[]>([]);
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
+  const [emptyList, setEmptyList] = useState(false)
 
   const currentTimeUTC = Date.now()
+  const history = useHistory();
 
   function getCookie(cookieName: string) {
     const cookieString = document.cookie;
@@ -47,6 +51,12 @@ const UpcomingMeetings: React.FC<{ searchSubject: string }> = ({
           .filter((value) => typeof value === 'object')
           .map((meeting) => meeting);
         setMeetings(meetingArray);
+        if(res.message === 'no_upcoming_meetings'){
+          setEmptyList(true)
+        }
+        else{
+          setEmptyList(false)
+        }
       })
       .catch((err: any) => {
         alert('Could not fetch meeting details. Please try again later.');
@@ -111,7 +121,7 @@ const UpcomingMeetings: React.FC<{ searchSubject: string }> = ({
   //Handle Functions
 
   const handleJoinConference = (meeting: any) => {
-    console.log('Joining meeting:');
+    history.push('/instant-conf', {meeting})
   };
 
   const handleCancelConference = (meeting: any) => {
@@ -164,7 +174,10 @@ const UpcomingMeetings: React.FC<{ searchSubject: string }> = ({
             Ongoing/Upcoming Meetings
           </IonCardTitle>
         </IonCardHeader>
-        <IonCardContent>
+        <IonCardContent className='scrollable-content'>
+          {emptyList && 
+          <IonText className='empty-message'>No Upcoming Meetings</IonText>
+          }
           {filteredMeetings.map((meeting, cardIndex) => (
             <IonCard className="meeting-detail-container" key={cardIndex}>
               <IonCardHeader style={{ display: 'flex', flexDirection: 'row' }}>
