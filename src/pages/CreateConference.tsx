@@ -472,13 +472,13 @@ const CreateConference: React.FC = () => {
     )
 
       .then((res) => {
-        console.log(res);
+        console.log(res.scheduleConferenceResult.conferenceInfo);
+        const meeting = res.scheduleConferenceResult.conferenceInfo;
+        history.replace('/schedule-confirmation', { meeting });
       })
       .catch((err) => {
         console.log(err);
       });
-
-    history.replace('/schedule-confirmation');
   };
 
   const handleAddContactGroup = () => {
