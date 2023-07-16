@@ -163,13 +163,13 @@ const UpcomingMeetings: React.FC<{ searchSubject: string }> = ({
   }
 
   const filteredMeetings = meetings.filter((meeting) =>
-  meeting.subject.toLowerCase().includes(searchSubject.toLowerCase())
+  meeting.subject?.toLowerCase().includes(searchSubject.toLowerCase())
 );
 
   return (
     <IonContent className="container-box">
       <IonCard className="container-card">
-        <IonCardHeader style={{ borderBottom: '1px solid black' }}>
+        <IonCardHeader style={{ borderBottom: '1px solid black', position: 'sticky', top:'0' }}>
           <IonCardTitle style={{ fontSize: '1.3rem' }}>
             Ongoing/Upcoming Meetings
           </IonCardTitle>
@@ -196,6 +196,7 @@ const UpcomingMeetings: React.FC<{ searchSubject: string }> = ({
                 />
               </IonCardHeader>
               <IonCardContent className="meeting-details ">
+                
                 <IonText>
                   Start Time:{' '}
                   {
