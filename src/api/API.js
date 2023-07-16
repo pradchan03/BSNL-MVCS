@@ -136,9 +136,7 @@ class API {
       body: JSON.stringify({
         token: `${token}`,
         conferenceID: `${conID}`,
-        inviteParas: {
-          invitePara: [body],
-        },
+        invitePara: body,
       }),
     })
       .then((response) => response.json())
