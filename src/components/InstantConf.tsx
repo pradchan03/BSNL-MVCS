@@ -52,7 +52,7 @@ const InstantConf: React.FC<RouteComponentProps<any, any, LocationState>> = ({lo
 
       if (res.message === "success") {
         localStorage.setItem('cred',res.token)
-        localStorage.setItem("Conference ID: ", meeting?.conferenceKey.conferenceID)
+        localStorage.setItem("Conference ID:", meeting?.conferenceKey.conferenceID)
 
           // Start the loop function after successful login
           const loopFunction = setInterval(() => {
@@ -97,18 +97,6 @@ const InstantConf: React.FC<RouteComponentProps<any, any, LocationState>> = ({lo
       ...participant,
       onCall: true,
     }));
-    participants.map((participant) => (
-      API.InviteParticipants(token, confID, [{
-        name: participant.name,
-        phone: participant.phoneNumber
-  }] )
-  .then((res) => {
-    console.log(res);})
-  .catch((err) => {
-      console.log(err);
-      alert("Something went wrong. Please try again.");
-    })
-    ))
     setParticipants(updatedParticipants);
   };
 
@@ -147,8 +135,19 @@ const InstantConf: React.FC<RouteComponentProps<any, any, LocationState>> = ({lo
   };
 
   const handleCallParticipantAbsent = (index: number) => {
+    const participant = participants[index]
+    API.InviteParticipants(token, confID, [{
+        name: participant.name,
+        phone: participant.phoneNumber
+  }] )
+  .then((res) => {
+    console.log(res);})
+  .catch((err) => {
+      console.log(err);
+      alert("Something went wrong. Please try again.");
+    })
+    
     const updatedParticipants = [...participants];
-    const participant = updatedParticipants[index];
     participant.onCall = !participant.onCall;
     setParticipants(updatedParticipants);
   };

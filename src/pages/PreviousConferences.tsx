@@ -104,7 +104,7 @@ const PreviousConferences: React.FC = () => {
     return (
     <IonContent className="container-box">
         <IonCard className="container-card">
-            <IonCardHeader style={{borderBottom: '1px solid black', display: 'flex', flexDirection: 'row'}}>
+            <IonCardHeader style={{borderBottom: '1px solid black', display: 'flex', flexDirection: 'row', position: 'sticky', top:'0'}}>
                 <IonCardTitle style={{fontSize:'1.3rem', flex: '1'}}>Previous Conferences</IonCardTitle>
                 <IonIcon icon={chevronBackOutline} style={{fontSize:'1.3rem', marginRight: '7.5px'}} onClick={handleLeftClick}/>
                 <IonIcon icon={chevronForwardOutline} style={{fontSize:'1.3rem', marginLeft: '7.5px'}} onClick={handleRightClick} />
