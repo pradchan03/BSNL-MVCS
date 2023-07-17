@@ -1,8 +1,17 @@
 import React, { useState } from 'react';
-import { IonList, IonItem, IonText, IonIcon, IonLabel, IonButtons, IonContent, IonAlert } from '@ionic/react';
+import {
+  IonList,
+  IonItem,
+  IonText,
+  IonIcon,
+  IonLabel,
+  IonButtons,
+  IonContent,
+  IonAlert,
+} from '@ionic/react';
 import { call, mic, micOff, person, trash } from 'ionicons/icons';
 
-import './InstantConf.css'
+import './InstantConf.css';
 
 interface Participant {
   name: string;
@@ -23,18 +32,20 @@ const inStyles = {
   fontWeight: '700',
   position: 'relative',
   top: '10px',
-  zIndex: '1'
-}
+  zIndex: '1',
+};
 
-const ContactList: React.FC<ContactListProps> = ({ 
+const ContactList: React.FC<ContactListProps> = ({
   participants,
-  onDeleteParticipant, 
+  onDeleteParticipant,
   onToggleParticipantMute,
-  onCallAbsentParticipant }) => {
-
-  const [selectedParticipantIndex, setSelectedParticipantIndex] = useState<number>(-1);
+  onCallAbsentParticipant,
+}) => {
+  const [selectedParticipantIndex, setSelectedParticipantIndex] =
+    useState<number>(-1);
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
-   
+  // const[raiseHand,setRaiseHand]=useState(false);
+
   const handleDeleteParticipant = (index: number) => {
     setSelectedParticipantIndex(index);
     setShowDeleteAlert(true);
@@ -53,34 +64,62 @@ const ContactList: React.FC<ContactListProps> = ({
     setShowDeleteAlert(false);
   };
 
-  return (    
+  return (
     <IonContent scrollY={true}>
-      <IonText className='ion-padding ion-no-margin' style={inStyles}>Participants List</IonText>
-      <IonList className='ion-margin-top'>
+      <IonText className="ion-padding ion-no-margin" style={inStyles}>
+        Participants List
+      </IonText>
+      <IonList className="ion-margin-top">
         {participants.map((participant, index) => (
           <IonItem key={index}>
-            {participant.onCall?
-            (<IonButtons className='ion-padding participant-btn' slot='end'>
-              <IonIcon color='danger' icon='../public/assets/icon/call_end_FILL1_wght400_GRAD0_opsz48.svg' onClick={() => onCallAbsentParticipant(index)} />
-            </IonButtons>):
-            (<IonButtons className='ion-padding participant-btn' slot='end'>
-              <IonIcon color='success' icon={call} onClick={() => onCallAbsentParticipant(index)} />
-            </IonButtons>)}
-            {participant.muted?
-            <IonButtons className='ion-padding participant-btn' slot='end'>
-              <IonIcon icon={micOff} onClick={() => onToggleParticipantMute(index)} />
-            </IonButtons>:
-            <IonButtons className='ion-padding participant-btn' slot='end'>
-              <IonIcon icon={mic} onClick={() => onToggleParticipantMute(index)} />
-            </IonButtons>}
-            <IonButtons className='ion-padding participant-btn' slot='end' onClick={() => handleDeleteParticipant(index)}>
+            {participant.onCall ? (
+              <IonButtons className="ion-padding participant-btn" slot="end">
+                <IonIcon
+                  color="danger"
+                  icon="../public/assets/icon/call_end_FILL1_wght400_GRAD0_opsz48.svg"
+                  onClick={() => onCallAbsentParticipant(index)}
+                />
+              </IonButtons>
+            ) : (
+              <IonButtons className="ion-padding participant-btn" slot="end">
+                <IonIcon
+                  color="success"
+                  icon={call}
+                  onClick={() => onCallAbsentParticipant(index)}
+                />
+              </IonButtons>
+            )}
+            {participant.muted ? (
+              <IonButtons className="ion-padding participant-btn" slot="end">
+                <IonIcon
+                  icon={micOff}
+                  onClick={() => onToggleParticipantMute(index)}
+                />
+              </IonButtons>
+            ) : (
+              <IonButtons className="ion-padding participant-btn" slot="end">
+                <IonIcon
+                  icon={mic}
+                  onClick={() => onToggleParticipantMute(index)}
+                />
+              </IonButtons>
+            )}
+            <IonButtons
+              className="ion-padding participant-btn"
+              slot="end"
+              onClick={() => handleDeleteParticipant(index)}
+            >
               <IonIcon icon={trash} />
             </IonButtons>
             <IonIcon slot="start" icon={person}></IonIcon>
             {/* <IonLabel> */}
             <IonText>
-              <IonLabel style={{fontWeight:'600', paddingBottom:'5px'}}>{participant.name}</IonLabel>
-              <IonLabel style={{fontSize:'12px'}}>Phone: {participant.phoneNumber}</IonLabel>
+              <IonLabel style={{ fontWeight: '600', paddingBottom: '5px' }}>
+                {participant.name}
+              </IonLabel>
+              <IonLabel style={{ fontSize: '12px' }}>
+                Phone: {participant.phoneNumber}
+              </IonLabel>
             </IonText>
             {/* </IonLabel> */}
           </IonItem>
