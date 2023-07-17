@@ -1,0 +1,30 @@
+.meeting-detail-container{
+    background-color: #0161b0;
+    color: #fff;
+}
+
+.meeting-details{
+    font-size: 16px;
+}
+
+.upcoming-meetings {
+    max-height: 75%;
+    overflow-y: auto;
+  }  
+
+.container-card{
+    background-color: #d9d9d9;
+    border-radius: 0;
+    height: 70%;
+    overflow-y: auto;
+}
+
+.container-box{
+    position: fixed;
+}
+
+.scrollable-content{
+    overflow-y: auto;
+    height: 85%;
+}
+

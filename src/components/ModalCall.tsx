@@ -1,60 +1,3 @@
-// import React, { useState } from 'react';
-// import {
-//   IonModal,
-//   IonContent,
-//   IonHeader,
-//   IonToolbar,
-//   IonTitle,
-//   IonInput,
-//   IonButton,
-// } from '@ionic/react';
-
-// interface ParticipantDetailsModalProps {
-//   showModal: boolean;
-//   onClose: () => void;
-//   onStartCall: (name: string, phoneNumber: string) => void;
-// }
-
-// const ParticipantDetailsModal: React.FC<ParticipantDetailsModalProps> = ({
-//   showModal,
-//   onClose,
-//   onStartCall,
-// }) => {
-//   const [name, setName] = useState('');
-//   const [phoneNumber, setPhoneNumber] = useState('');
-
-//   const handleStartCall = () => {
-//     onStartCall(name, phoneNumber);
-//   };
-
-//   return (
-//     <IonModal isOpen={showModal} onDidDismiss={onClose}>
-//       <IonContent>
-//         <IonHeader>
-//           <IonToolbar>
-//             <IonTitle>Participant Details</IonTitle>
-//           </IonToolbar>
-//         </IonHeader>
-//         <IonInput
-//           type="text"
-//           value={name}
-//           placeholder="Name"
-//           onIonChange={(e) => setName(e.detail.value!)}
-//         />
-//         <IonInput
-//           type="tel"
-//           value={phoneNumber}
-//           placeholder="Phone Number"
-//           onIonChange={(e) => setPhoneNumber(e.detail.value!)}
-//         />
-//         <IonButton onClick={handleStartCall}>Add Participant</IonButton>
-//       </IonContent>
-//     </IonModal>
-//   );
-// };
-
-// export default ParticipantDetailsModal;
-
 import React, { useState } from 'react';
 import {
   IonModal,
@@ -63,12 +6,20 @@ import {
   IonInput,
   IonItem,
   IonLabel,
-  IonText,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButtons,
+  IonGrid,
+  IonRow,
+  IonCol,
 } from '@ionic/react';
+
+import API from '../api/API.js'
 
 interface ModalCallProps {
   isOpen: boolean;
-  onAddParticipant: (name: string, phoneNumber: string) => void;
+  onAddParticipant: (name: string, phoneNumber: string, smsPhoneNumber: string , emailId: string) => void;
   onClose: () => void;
 }
 
@@ -77,41 +28,104 @@ const ModalCall: React.FC<ModalCallProps> = ({
   onAddParticipant,
   onClose,
 }) => {
-  const [name, setName] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
+
+  const [name, setName] = useState<string>('');
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const [smsPhoneNumber, setSmsPhoneNumber] = useState<string>(null);
+  const [emailId, setEmailId] = useState<string>('');
+  
+  function getCookie(cookieName: any) {
+    const cookieString = document.cookie;
+    const cookies = cookieString.split(":");
+
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.startsWith(cookieName + "=")) {
+        return cookie.substring(cookieName.length + 1);
+      }
+    }
+    return null; // Return null if the cookie is not found
+  }
+
+  var token = getCookie("user");
 
   const handleAddParticipant = () => {
-    onAddParticipant(name, phoneNumber);
+    onAddParticipant(name, phoneNumber,smsPhoneNumber,emailId);
     setName('');
-    setPhoneNumber('');
+    setPhoneNumber(null);
+    setSmsPhoneNumber(null);
+    setEmailId('');
     onClose();
+  };
+
+  const inputStyles = {
+    border: '1px solid #d9d9d9',
+    borderRadius: '4px',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+    textIndent: '12px',
   };
 
   return (
     <IonModal isOpen={isOpen}>
-      <IonContent>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Add Participant</IonTitle>
+          <IonButtons slot="end">
+            <IonButton onClick={onClose}>Close</IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent className='ion-padding'>
         <IonItem>
-          <IonLabel position="floating">Name</IonLabel>
+          <IonLabel position="stacked"><b>Name</b></IonLabel>
           <IonInput
+            style={inputStyles}
             type="text"
             value={name}
-            onIonChange={(e) => setName(e.detail.value!)}
+            onIonInput={(e) => setName(e.detail.value! as string)}
           ></IonInput>
         </IonItem>
         <IonItem>
-          <IonLabel position="floating">Phone Number</IonLabel>
+          <IonLabel position="stacked"><b>Phone Number</b></IonLabel>
           <IonInput
-            type="text"
+            style={inputStyles}
+            type='text'
             value={phoneNumber}
-            onIonChange={(e) => setPhoneNumber(e.detail.value!)}
+            onIonInput={(e) => setPhoneNumber(e.detail.value! as string)}
           ></IonInput>
         </IonItem>
-        <IonButton expand="block" onClick={handleAddParticipant}>
-          Add Participant
-        </IonButton>
-        <IonButton expand="block" color="danger" onClick={onClose}>
-          Close
-        </IonButton>
+        <IonItem>
+          <IonLabel position="stacked"><b>SMS Phone Number</b></IonLabel>
+          <IonInput
+            style={inputStyles}
+            type="text"
+            value={smsPhoneNumber}
+            onIonInput={(e) => setSmsPhoneNumber(e.detail.value! as string)}
+          ></IonInput>
+        </IonItem>
+        <IonItem>
+          <IonLabel position="stacked"><b>Email Id</b></IonLabel>
+          <IonInput
+            style={inputStyles}
+            type="email"
+            value={emailId}
+            onIonInput={(e) => setEmailId(e.detail.value! as string)}
+          ></IonInput>
+        </IonItem>
+        <IonGrid>
+          <IonRow>
+            <IonCol>
+              <IonButton expand="block" onClick={handleAddParticipant}>
+                Add Participant
+              </IonButton>
+            </IonCol>
+            <IonCol>
+              <IonButton expand="block" color="danger" onClick={onClose}>
+                Close
+              </IonButton>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
       </IonContent>
     </IonModal>
   );

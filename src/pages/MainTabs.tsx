@@ -20,15 +20,15 @@ import SchedulePage from './SchedulePage';
 import SpeakerList from './SpeakerList';
 import SpeakerDetail from './SpeakerDetail';
 import SessionDetail from './SessionDetail';
-import MapView from './MapView';
 import About from './About';
 import CreateConference from './CreateConference';
+import ConferenceTemplates from './ConferenceTemplates';
 
 interface MainTabsProps {}
 
 const MainTabs: React.FC<MainTabsProps> = () => {
   return (
-    <IonTabs>
+    <IonTabs className='main-tab'>
       <IonRouterOutlet>
         <Redirect exact path="/tabs" to="/tabs/schedule" />
         {/*
@@ -37,7 +37,7 @@ const MainTabs: React.FC<MainTabsProps> = () => {
         */}
         <Route
           path="/tabs/schedule"
-          render={() => <SchedulePage />}
+          render={() => <SchedulePage/>}
           exact={true}
         />
         <Route
@@ -52,10 +52,19 @@ const MainTabs: React.FC<MainTabsProps> = () => {
         />
         <Route path="/tabs/schedule/:id" component={SessionDetail} />
         <Route path="/tabs/speakers/sessions/:id" component={SessionDetail} />
-        <Route path="/tabs/map" render={() => <MapView />} exact={true} />
         <Route
           path="/tabs/createconf"
           render={() => <CreateConference />}
+          exact={true}
+        />
+        <Route
+          path="/tabs/createconf"
+          render={() => <CreateConference />}
+          exact={true}
+        />
+        <Route
+          path="/tabs/templates"
+          render={() => <ConferenceTemplates />}
           exact={true}
         />
         <Route path="/tabs/about" render={() => <About />} exact={true} />
@@ -73,13 +82,9 @@ const MainTabs: React.FC<MainTabsProps> = () => {
           <IonIcon icon={people} />
           <IonLabel>Contacts</IonLabel>
         </IonTabButton>
-        <IonTabButton tab="map" href="/tabs/map">
+        <IonTabButton tab="templates" href="/tabs/templates">
           <IonIcon icon={create} />
           <IonLabel>Templates</IonLabel>
-        </IonTabButton>
-        <IonTabButton tab="about" href="/tabs/about">
-          <IonIcon icon={informationCircle} />
-          <IonLabel>About</IonLabel>
         </IonTabButton>
       </IonTabBar>
     </IonTabs>

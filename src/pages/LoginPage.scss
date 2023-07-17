@@ -1,0 +1,100 @@
+/* Header */
+
+.multi-text{
+    font-size: 1.25rem;
+    font-weight: 900;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Login Box */
+
+.logo-img{
+    height: 3.125rem;
+}
+
+.login-box{
+    margin: 3rem 0;
+    text-align: center;
+}
+
+.join-box{
+    margin: 5rem 0;
+}
+
+.login-join-title{
+    font-family: 'Roboto';
+    text-align: center;
+}
+
+.visibility-button{
+    --ion-color-primary: #ffffff;
+	--ion-color-primary-rgb: 1,97,176;
+	--ion-color-primary-contrast: #000000;
+	--ion-color-primary-contrast-rgb: 255,255,255;
+	--ion-color-primary-shade: #ffffff;
+	--ion-color-primary-tint: #87898a;
+
+    position: relative;
+    top: 2rem;
+}
+
+.forgot-password{
+    color: #0161b0;
+    text-align: center;
+}
+
+.join-conference-btn{
+    border: 1px solid #d9d9d9;
+    --color: #000000;
+}
+
+.error-login{
+    font-size: 14px;
+}
+
+/* Login Box Animation */
+
+.login-box {
+    animation: slide-up 0.3s ease;
+  }
+  
+.join-box {
+    animation: slide-down 0.3s ease;
+}
+
+@keyframes slide-down {
+    from {
+        transform: translateY(10%);
+    }
+    to {
+        transform: translateY(0);
+    }
+    }
+
+@keyframes slide-up {
+from {
+    transform: translateY(-10%);
+}
+to {
+    transform: translateY(0);
+}
+}
+
+/* Ion Component Styles */
+
+ion-button {
+	--ion-color-primary: #0161b0;
+	--ion-color-primary-rgb: 1,97,176;
+	--ion-color-primary-contrast: #ffffff;
+	--ion-color-primary-contrast-rgb: 255,255,255;
+	--ion-color-primary-shade: #01559b;
+	--ion-color-primary-tint: #1a71b8;
+}
+
+ion-card{
+    box-shadow: none;
+}
+
+ion-toolbar{
+    padding-top: 40px;
+}

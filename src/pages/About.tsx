@@ -19,7 +19,6 @@ import {
 } from '@ionic/react';
 import './About.scss';
 import { ellipsisHorizontal, ellipsisVertical } from 'ionicons/icons';
-import AboutPopover from '../components/AboutPopover';
 import { format, parseISO } from 'date-fns';
 
 interface AboutProps {}
@@ -54,15 +53,6 @@ const About: React.FC<AboutProps> = () => {
           <IonToolbar>
             <IonButtons slot="start">
               <IonMenuButton></IonMenuButton>
-            </IonButtons>
-            <IonButtons slot="end">
-              <IonButton onClick={presentPopover}>
-                <IonIcon
-                  slot="icon-only"
-                  ios={ellipsisHorizontal}
-                  md={ellipsisVertical}
-                ></IonIcon>
-              </IonButton>
             </IonButtons>
           </IonToolbar>
         </IonHeader>
@@ -156,14 +146,6 @@ const About: React.FC<AboutProps> = () => {
           </IonList>
         </div>
       </IonContent>
-
-      <IonPopover
-        isOpen={showPopover}
-        event={popoverEvent}
-        onDidDismiss={() => setShowPopover(false)}
-      >
-        <AboutPopover dismiss={() => setShowPopover(false)} />
-      </IonPopover>
     </IonPage>
   );
 };

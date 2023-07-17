@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Route } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
   IonRouterOutlet,
@@ -26,6 +26,7 @@ import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
+
 /* Theme variables */
 import './theme/variables.css';
 import MainTabs from './pages/MainTabs';
@@ -37,17 +38,15 @@ import {
   setUsername,
   loadUserData,
 } from './data/user/user.actions';
-import Account from './pages/Account';
-import Login from './pages/Login';
+import LoginPage from './pages/LoginPage';
 import Signup from './pages/Signup';
 import Support from './pages/Support';
-import Tutorial from './pages/Tutorial';
-import HomeOrTutorial from './components/HomeOrTutorial';
 import { Schedule } from './models/Schedule';
 import RedirectToLogin from './components/RedirectToLogin';
-import NewConf from './components/NewConf';
 import Contacts from './components/Contacts';
 import InstantConf from './components/InstantConf';
+import Settings from './pages/Settings';
+import ScheduleConfirmation from './pages/ScheduleConfirmation';
 
 setupIonicReact();
 
@@ -100,14 +99,13 @@ const IonicApp: React.FC<IonicAppProps> = ({
                 which makes transitions between tabs and non tab pages smooth
                 */}
             <Route path="/tabs" render={() => <MainTabs />} />
-            <Route path="/account" component={Account} />
-            <Route path="/login" component={Login} />
+            <Route path="/settings" component={Settings} />
+            <Route path="/login" component={LoginPage} />
             <Route path="/signup" component={Signup} />
             <Route path="/support" component={Support} />
-            <Route path="/tutorial" component={Tutorial} />
-            <Route path="/new-conf" component={NewConf} exact />
             <Route path="/contacts" component={Contacts} exact />
             <Route path="/instant-conf" component={InstantConf} exact />
+            <Route path="/schedule-confirmation" component={ScheduleConfirmation} exact />
 
             <Route
               path="/logout"
@@ -120,7 +118,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
                 );
               }}
             />
-            <Route path="/" component={HomeOrTutorial} exact />
+            <Route path="/" component={LoginPage} exact />
           </IonRouterOutlet>
         </IonSplitPane>
       </IonReactRouter>

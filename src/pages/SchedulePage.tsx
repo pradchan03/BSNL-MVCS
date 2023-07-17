@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
 
+import React, { useState, useRef } from 'react';
 import {
   IonToolbar,
   IonContent,
@@ -7,8 +7,6 @@ import {
   IonButtons,
   IonTitle,
   IonMenuButton,
-  IonSegment,
-  IonSegmentButton,
   IonButton,
   IonIcon,
   IonSearchbar,
@@ -19,19 +17,18 @@ import {
   IonHeader,
   getConfig,
 } from '@ionic/react';
-import { options, search } from 'ionicons/icons';
+import { arrowBack, arrowForward, search } from 'ionicons/icons';
 
-import SessionList from '../components/SessionList';
-import SessionListFilter from '../components/SessionListFilter';
 import './SchedulePage.scss';
 
 import ShareSocialFab from '../components/NewFabBtn';
-
+import { call } from 'ionicons/icons';
 import * as selectors from '../data/selectors';
 import { connect } from '../data/connect';
 import { setSearchText } from '../data/sessions/sessions.actions';
 import { Schedule } from '../models/Schedule';
 import DashboardContents from './DashboardContents';
+import { useHistory } from 'react-router';
 
 interface OwnProps {}
 
@@ -53,83 +50,63 @@ const SchedulePage: React.FC<SchedulePageProps> = ({
   setSearchText,
   mode,
 }) => {
-  const [segment, setSegment] = useState<'all' | 'favorites'>('all');
   const [showSearchbar, setShowSearchbar] = useState<boolean>(false);
-  const [showFilterModal, setShowFilterModal] = useState(false);
+  const [viewHistory, setViewHistory] = useState<boolean>(false);
+  const [searchSubject, setSearchSubject] = useState<string>('');
   const ionRefresherRef = useRef<HTMLIonRefresherElement>(null);
   const [showCompleteToast, setShowCompleteToast] = useState(false);
+
+  const history = useHistory();
+
+  const handleFabClick = () => {
+    history.push('/instant-conf');
+  };
+
+  const handleViewHistory = () => {
+    setSearchSubject('');
+    setViewHistory(true);
+  };
+
+  const handleBackToDashboard = () => {
+    setSearchSubject('');
+    setViewHistory(false);
+  };
+
+  const doRefresh = (event) => {
+    // Perform your refresh logic here
+    
+    setTimeout(() => {
+      event.detail.complete(); // Mark the refresh as complete
+    }, 2000); // Replace with your actual refresh logic
+  };
 
   const pageRef = useRef<HTMLElement>(null);
 
   const ios = mode === 'ios';
 
-  const doRefresh = () => {
-    setTimeout(() => {
-      ionRefresherRef.current!.complete();
-      setShowCompleteToast(true);
-    }, 2500);
-  };
-
   return (
     <IonPage ref={pageRef} id="schedule-page">
       <IonHeader translucent={true}>
         <IonToolbar>
+          <IonTitle>Dashboard</IonTitle>
           {!showSearchbar && (
             <IonButtons slot="start">
               <IonMenuButton />
             </IonButtons>
           )}
-          {ios && (
-            <IonSegment
-              value={segment}
-              onIonChange={(e) => setSegment(e.detail.value as any)}
-            >
-              <IonSegmentButton value="all">All</IonSegmentButton>
-              <IonSegmentButton value="favorites">Favorites</IonSegmentButton>
-            </IonSegment>
-          )}
-          {!ios && !showSearchbar && <IonTitle>Schedule</IonTitle>}
-          {showSearchbar && (
-            <IonSearchbar
-              showCancelButton="always"
-              placeholder="Search"
-              onIonInput={(e: CustomEvent) => setSearchText(e.detail.value)}
-              onIonCancel={() => setShowSearchbar(false)}
-            ></IonSearchbar>
-          )}
-
           <IonButtons slot="end">
             {!ios && !showSearchbar && (
               <IonButton onClick={() => setShowSearchbar(true)}>
                 <IonIcon slot="icon-only" icon={search}></IonIcon>
               </IonButton>
             )}
-            {!showSearchbar && (
-              <IonButton onClick={() => setShowFilterModal(true)}>
-                {mode === 'ios' ? (
-                  'Filter'
-                ) : (
-                  <IonIcon icon={options} slot="icon-only" />
-                )}
-              </IonButton>
-            )}
           </IonButtons>
         </IonToolbar>
-
-        {!ios && (
-          <IonToolbar>
-            <IonSegment
-              value={segment}
-              onIonChange={(e) => setSegment(e.detail.value as any)}
-            >
-              <IonSegmentButton value="all">All</IonSegmentButton>
-              <IonSegmentButton value="favorites">Favorites</IonSegmentButton>
-            </IonSegment>
-          </IonToolbar>
-        )}
       </IonHeader>
-
-      <IonContent fullscreen={true}>
+      <IonContent>
+        <IonRefresher slot="fixed" onIonRefresh={doRefresh}>
+          <IonRefresherContent></IonRefresherContent>
+        </IonRefresher>
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">Dashboard</IonTitle>
@@ -137,47 +114,37 @@ const SchedulePage: React.FC<SchedulePageProps> = ({
           <IonToolbar>
             <IonSearchbar
               placeholder="Search"
-              onIonInput={(e: CustomEvent) => setSearchText(e.detail.value)}
+              onIonInput={(e: CustomEvent) => setSearchSubject(e.detail.value)}
             ></IonSearchbar>
           </IonToolbar>
         </IonHeader>
-
-        <IonRefresher
-          slot="fixed"
-          ref={ionRefresherRef}
-          onIonRefresh={doRefresh}
-        >
-          <IonRefresherContent />
-        </IonRefresher>
-
-        <IonToast
-          isOpen={showCompleteToast}
-          message="Refresh complete"
-          duration={2000}
-          onDidDismiss={() => setShowCompleteToast(false)}
+        <IonToolbar className="ion-no-padding">
+          {viewHistory ? (
+            <IonButtons
+              className="view-history-btn"
+              slot="end"
+              onClick={handleBackToDashboard}
+            >
+              <IonIcon icon={arrowBack} />
+              Back to Dashboard
+            </IonButtons>
+          ) : (
+            <IonButtons
+              className="view-history-btn"
+              slot="end"
+              onClick={handleViewHistory}
+            >
+              View Conference History
+              <IonIcon icon={arrowForward} />
+            </IonButtons>
+          )}
+        </IonToolbar>
+        <DashboardContents
+          viewHistory={viewHistory}
+          searchSubject={searchSubject}
         />
-        <DashboardContents />
-        {/* <SessionList
-          schedule={schedule}
-          listType={segment}
-          hide={segment === 'favorites'}
-        />
-        <SessionList
-          schedule={favoritesSchedule}
-          listType={segment}
-          hide={segment === 'all'}
-        /> */}
       </IonContent>
-
-      <IonModal
-        isOpen={showFilterModal}
-        onDidDismiss={() => setShowFilterModal(false)}
-        presentingElement={pageRef.current!}
-      >
-        <SessionListFilter onDismissModal={() => setShowFilterModal(false)} />
-      </IonModal>
-
-      <ShareSocialFab />
+      <ShareSocialFab label="New" icon={call} onClick={handleFabClick} />
     </IonPage>
   );
 };

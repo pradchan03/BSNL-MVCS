@@ -1,74 +1,153 @@
-// import { IonItem } from '@ionic/react';
-// import React from 'react';
+import React, { useState } from 'react';
+import {
+  IonList,
+  IonItem,
+  IonText,
+  IonIcon,
+  IonLabel,
+  IonButtons,
+  IonContent,
+  IonAlert,
+} from '@ionic/react';
+import { call, handLeft, mic, micOff, person, trash } from 'ionicons/icons';
 
-// const ContactList = () => {
-//   return <IonItem>Participants</IonItem>;
-// };
-// export default ContactList;
+import './InstantConf.css';
 
-// import { IonItem, IonList } from '@ionic/react';
-// import React, { useEffect, useState } from 'react';
-
-// interface ContactListProps {
-//   addParticipant: (name: string, phoneNumber: string) => void;
-// }
-
-// const ContactList: React.FC<ContactListProps> = ({ addParticipant }) => {
-//   const [participants, setParticipants] = useState<string[]>([]);
-
-//   useEffect(() => {
-//     // Retrieve participant details from local storage on page load
-//     const storedParticipants = localStorage.getItem('participants');
-//     if (storedParticipants) {
-//       setParticipants(JSON.parse(storedParticipants));
-//     }
-//   }, []);
-
-//   useEffect(() => {
-//     // Store participant details in local storage whenever the list is updated
-//     localStorage.setItem('participants', JSON.stringify(participants));
-//   }, [participants]);
-
-//   const handleAddParticipant = (name: string, phoneNumber: string) => {
-//     addParticipant(name, phoneNumber);
-//     setParticipants([...participants, name]);
-//   };
-
-//   return (
-//     <IonList>
-//       {participants.map((participant, index) => (
-//         <IonItem key={index}>{participant}</IonItem>
-//       ))}
-//     </IonList>
-//   );
-// };
-
-// export default ContactList;
-import React from 'react';
-import { IonList, IonItem, IonText, IonIcon, IonHeader } from '@ionic/react';
-import { person } from 'ionicons/icons';
-interface ContactListProps {
-  participants: { name: string; phoneNumber: string }[];
+interface Participant {
+  attendeeName: string;
+  addressEntry: {
+    address: string;
+    type: string;
+  }[];
+  muted: boolean;
+  onCall: boolean;
 }
 
-const ContactList: React.FC<ContactListProps> = ({ participants }) => {
+interface ContactListProps {
+  participants: Participant[];
+  onDeleteParticipant: (index: number) => void;
+  onToggleParticipantMute: (index: number) => void;
+  onCallAbsentParticipant: (index: number) => void;
+}
+
+const inStyles = {
+  fontSize: '1.2rem',
+  fontWeight: '700',
+  position: 'relative',
+  top: '10px',
+  zIndex: '1',
+};
+
+const ContactList: React.FC<ContactListProps> = ({
+  participants,
+  onDeleteParticipant,
+  onToggleParticipantMute,
+  onCallAbsentParticipant,
+}) => {
+  const [selectedParticipantIndex, setSelectedParticipantIndex] =
+    useState<number>(-1);
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
+
+  const handleDeleteParticipant = (index: number) => {
+    setSelectedParticipantIndex(index);
+    setShowDeleteAlert(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (selectedParticipantIndex !== -1) {
+      onDeleteParticipant(selectedParticipantIndex);
+      setSelectedParticipantIndex(-1);
+    }
+    setShowDeleteAlert(false);
+  };
+
+  const handleCancelDelete = () => {
+    setSelectedParticipantIndex(-1);
+    setShowDeleteAlert(false);
+  };
+
   return (
-    <IonHeader>
-      Participant List
-      <IonList>
+    <IonContent scrollY={true}>
+      <IonText className="ion-padding ion-no-margin" style={inStyles}>
+        Participants List
+      </IonText>
+      <IonList className="ion-margin-top">
         {participants.map((participant, index) => (
           <IonItem key={index}>
-            <IonIcon slot="start" icon={person}></IonIcon>
+            {participant.onCall ? (
+              <IonButtons className="ion-padding participant-btn" slot="end">
+                <IonIcon
+                  color="danger"
+                  icon="../public/assets/icon/call_end_FILL1_wght400_GRAD0_opsz48.svg"
+                  onClick={() => onCallAbsentParticipant(index)}
+                />
+              </IonButtons>
+            ) : (
+              <IonButtons className="ion-padding participant-btn" slot="end">
+                <IonIcon
+                  color="success"
+                  icon={call}
+                  onClick={() => onCallAbsentParticipant(index)}
+                />
+              </IonButtons>
+            )}
+            {participant.muted ? (
+              <IonButtons className="ion-padding participant-btn" slot="end">
+                <IonIcon
+                  icon={micOff}
+                  onClick={() => onToggleParticipantMute(index)}
+                />
+              </IonButtons>
+            ) : (
+              <IonButtons className="ion-padding participant-btn" slot="end">
+                <IonIcon
+                  icon={mic}
+                  onClick={() => onToggleParticipantMute(index)}
+                />
+              </IonButtons>
+            )}
+            <IonButtons
+              className="ion-padding participant-btn"
+              slot="end"
+              onClick={() => handleDeleteParticipant(index)}
+            >
+              <IonIcon icon={trash} />
+            </IonButtons>
+            {showHand ? (
+              <IonIcon slot="start" icon={handLeft} color="warning" />
+            ) : (
+              <IonIcon slot="start" icon={person} />
+            )}
             {/* <IonLabel> */}
             <IonText>
-              <IonItem>{participant.name}</IonItem>
-              <IonItem>{participant.phoneNumber}</IonItem>
+              <IonLabel style={{ fontWeight: '600', paddingBottom: '5px' }}>
+                {participant.name}
+              </IonLabel>
+              <IonLabel style={{ fontSize: '12px' }}>
+                Phone: {participant.phoneNumber}
+              </IonLabel>
             </IonText>
             {/* </IonLabel> */}
           </IonItem>
         ))}
       </IonList>
-    </IonHeader>
+      <IonAlert
+        isOpen={showDeleteAlert}
+        header="Confirmation"
+        message="Are you sure you want to remove this participant?"
+        buttons={[
+          {
+            text: 'No',
+            role: 'cancel',
+            handler: handleCancelDelete,
+          },
+          {
+            text: 'Yes',
+            handler: handleConfirmDelete,
+          },
+        ]}
+      />
+    </IonContent>
   );
 };
 

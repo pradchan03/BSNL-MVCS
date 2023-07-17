@@ -1,7 +1,9 @@
-import React from 'react';
-import { RouteComponentProps, withRouter, useLocation } from 'react-router';
+import React, { useState } from 'react';
+import { RouteComponentProps, withRouter, useHistory } from 'react-router';
 
 import {
+  IonBackButton,
+  IonButtons,
   IonContent,
   IonIcon,
   IonItem,
@@ -13,6 +15,7 @@ import {
   IonToggle,
 } from '@ionic/react';
 import {
+  create,
   calendarOutline,
   hammer,
   moonOutline,
@@ -25,30 +28,26 @@ import {
   person,
   personAdd,
   call,
+  settings,
 } from 'ionicons/icons';
 
 import { connect } from '../data/connect';
-import { setDarkMode } from '../data/user/user.actions';
-
 import './Menu.css';
+
+import API from '../api/API.js'
 
 const routes = {
   appPages: [
-    { title: 'Schedule', path: '/tabs/schedule', icon: calendarOutline },
+    { title: 'Dashboard', path: '/tabs/schedule', icon: calendarOutline },
     { title: 'Create Conference', path: '/tabs/createconf', icon: call },
-    { title: 'Speakers', path: '/tabs/speakers', icon: peopleOutline },
-    { title: 'Map', path: '/tabs/map', icon: mapOutline },
+    { title: 'Contacts', path: '/tabs/speakers', icon: peopleOutline },
+    { title: 'Templates', path: '/tabs/templates', icon: create },
     { title: 'About', path: '/tabs/about', icon: informationCircleOutline },
   ],
   loggedInPages: [
-    { title: 'Account', path: '/account', icon: person },
+    { title: 'Settings', path: '/settings', icon: settings },
     { title: 'Support', path: '/support', icon: help },
-    { title: 'Logout', path: '/logout', icon: logOut },
-  ],
-  loggedOutPages: [
-    { title: 'Login', path: '/login', icon: logIn },
-    { title: 'Support', path: '/support', icon: help },
-    { title: 'Signup', path: '/signup', icon: personAdd },
+    { title: 'Logout', path: '/logout', icon: logOut }
   ],
 };
 
@@ -59,44 +58,87 @@ interface Pages {
   routerDirection?: string;
 }
 interface StateProps {
-  darkMode: boolean;
   isAuthenticated: boolean;
   menuEnabled: boolean;
 }
 
-interface DispatchProps {
-  setDarkMode: typeof setDarkMode;
-}
-
-interface MenuProps extends RouteComponentProps, StateProps, DispatchProps {}
+interface MenuProps extends RouteComponentProps, StateProps {}
 
 const Menu: React.FC<MenuProps> = ({
-  darkMode,
-  history,
   isAuthenticated,
-  setDarkMode,
   menuEnabled,
 }) => {
-  const location = useLocation();
+
+  const history = useHistory()
+
+  const handleLogout = () => { 
+
+    console.log(document.cookie);
+      function getCookie(cookieName) {
+        const cookieString = document.cookie;
+        const cookies = cookieString.split(":");
+  
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.startsWith(cookieName + "=")) {
+            return cookie.substring(cookieName.length + 1);
+          }
+        }
+  
+        return null;
+      }
+      const token = getCookie("user");
+      console.log(API.Logout(token));
+      function clearAllCookies() {
+        var cookies = document.cookie.split(":");
+  
+        for (var i = 0; i < cookies.length; i++) {
+          var cookie = cookies[i];
+          var eqPos = cookie.indexOf("=");
+          var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+          document.cookie =
+            name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+        }
+      }
+      clearAllCookies();
+      history.push("/");
+  }
+  
 
   function renderlistItems(list: Pages[]) {
     return list
       .filter((route) => !!route.path)
-      .map((p) => (
-        <IonMenuToggle key={p.title} auto-hide="false">
-          <IonItem
-            detail={false}
-            routerLink={p.path}
-            routerDirection="none"
-            className={
-              location.pathname.startsWith(p.path) ? 'selected' : undefined
-            }
-          >
-            <IonIcon slot="start" icon={p.icon} />
-            <IonLabel>{p.title}</IonLabel>
-          </IonItem>
-        </IonMenuToggle>
-      ));
+      .map((p) => {
+        if (p.title === 'Logout') {
+          return (
+            <IonMenuToggle key={p.title} auto-hide="false">
+              <IonItem
+                detail={false}
+                onClick={handleLogout}
+                routerDirection="root"
+                className={location.pathname.startsWith(p.path) ? 'selected' : undefined}
+              >
+                <IonIcon color='danger' slot="start" icon={p.icon} />
+                <IonLabel color='danger'>{p.title}</IonLabel>
+              </IonItem>
+            </IonMenuToggle>
+          );
+        } else {
+          return (
+            <IonMenuToggle key={p.title} auto-hide="false">
+              <IonItem
+                detail={false}
+                routerLink={p.path}
+                routerDirection="none"
+                className={location.pathname.startsWith(p.path) ? 'selected' : undefined}
+              >
+                <IonIcon slot="start" icon={p.icon} />
+                <IonLabel>{p.title}</IonLabel>
+              </IonItem>
+            </IonMenuToggle>
+          );
+        }
+      });
   }
 
   return (
@@ -108,34 +150,7 @@ const Menu: React.FC<MenuProps> = ({
         </IonList>
         <IonList lines="none">
           <IonListHeader>Account</IonListHeader>
-          {isAuthenticated
-            ? renderlistItems(routes.loggedInPages)
-            : renderlistItems(routes.loggedOutPages)}
-          <IonItem>
-            <IonIcon
-              slot="start"
-              icon={moonOutline}
-              aria-hidden="true"
-            ></IonIcon>
-            <IonToggle
-              checked={darkMode}
-              onClick={() => setDarkMode(!darkMode)}
-            >
-              Dark Mode
-            </IonToggle>
-          </IonItem>
-        </IonList>
-        <IonList lines="none">
-          <IonListHeader>Tutorial</IonListHeader>
-          <IonItem
-            button
-            onClick={() => {
-              history.push('/tutorial');
-            }}
-          >
-            <IonIcon slot="start" icon={hammer} />
-            Show Tutorial
-          </IonItem>
+          {renderlistItems(routes.loggedInPages)}
         </IonList>
       </IonContent>
     </IonMenu>
@@ -148,8 +163,5 @@ export default connect<{}, StateProps, {}>({
     isAuthenticated: state.user.isLoggedin,
     menuEnabled: state.data.menuEnabled,
   }),
-  mapDispatchToProps: {
-    setDarkMode,
-  },
   component: withRouter(Menu),
 });

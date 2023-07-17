@@ -7,38 +7,31 @@ import {
   IonContent,
   IonLabel,
 } from '@ionic/react';
-import { call } from 'ionicons/icons';
 import React, { useState } from 'react';
 import './ShareSocialFab.css';
-import { useHistory } from 'react-router-dom';
 
-const ShareSocialFab: React.FC = () => {
-  const history = useHistory();
 
-  const handleFabClick = () => {
-    history.push('/new-conf'); // Replace 'other-page' with the desired route/path
-  };
-  const [loadingMessage, setLoadingMessage] = useState('');
-  const [showLoading, setShowLoading] = useState(false);
+interface NewFabProps {
+  label: string;
+  icon: string;
+  onClick: () => void;
+}
 
-  const openSocial = (network: string) => {
-    setLoadingMessage(`Posting to ${network}`);
-    setShowLoading(true);
-  };
+const ShareSocialFab: React.FC<NewFabProps> = ({label, icon, onClick}) => {
 
   return (
     <>
       <IonFab vertical="bottom" horizontal="end" slot="fixed">
         <IonFabButton
           className="rectangular-fab-button"
-          onClick={handleFabClick}
+          onClick={onClick}
         >
           <div className="fab-content">
             <div className="fab-icon">
-              <IonIcon icon={call} />
+              <IonIcon icon={icon} />
             </div>
             <div className="fab-label">
-              <IonLabel>New</IonLabel>
+              <IonLabel>{label}</IonLabel>
             </div>
           </div>
         </IonFabButton>

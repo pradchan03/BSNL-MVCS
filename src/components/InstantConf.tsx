@@ -1,339 +1,155 @@
-// import React from 'react';
-// import {
-//   IonContent,
-//   IonHeader,
-//   IonPage,
-//   IonToolbar,
-//   IonButtons,
-//   IonBackButton,
-//   IonTitle,
-//   IonSearchbar,
-//   IonIcon,
-//   IonLabel,
-//   IonSegment,
-//   IonSegmentButton,
-//   IonSelectOption,
-// } from '@ionic/react';
-// import {
-//   call,
-//   heart,
-//   pin,
-//   personAdd,
-//   peopleCircle,
-//   personRemove,
-//   volumeMute,
-//   people,
-// } from 'ionicons/icons';
-
-// const InstantConf: React.FC = () => {
-//   return (
-//     <>
-//       <IonPage>
-//         <IonHeader>
-//           <IonToolbar>
-//             <IonButtons slot="start">
-//               <IonBackButton defaultHref="/" />
-//             </IonButtons>
-//             <IonTitle>Start Conference</IonTitle>
-//           </IonToolbar>
-//         </IonHeader>
-//         <IonContent>
-//           <IonSearchbar placeholder="Search" />
-//           <IonSegment value="functions">
-//             <IonSegmentButton value="call">
-//               <IonLabel>Call</IonLabel>
-//               <IonIcon icon={personAdd}></IonIcon>
-//             </IonSegmentButton>
-//             <IonSegmentButton value="heart">
-//               <IonLabel>Add Groups</IonLabel>
-//               <IonIcon icon={peopleCircle}></IonIcon>
-//             </IonSegmentButton>
-//             <IonSegmentButton value="absent">
-//               <IonLabel>Call Absent</IonLabel>
-//               <IonIcon icon={call}></IonIcon>
-//             </IonSegmentButton>
-//             <IonSegmentButton value="mute">
-//               <IonLabel>Mute All</IonLabel>
-//               <IonIcon icon={volumeMute}></IonIcon>
-//             </IonSegmentButton>
-//             <IonSegmentButton value="subconf">
-//               <IonLabel> Create Sub</IonLabel>
-//               <IonLabel>Conference</IonLabel>
-//               <IonIcon icon={people}></IonIcon>
-//             </IonSegmentButton>
-//           </IonSegment>
-//         </IonContent>
-//       </IonPage>
-//     </>
-//   );
-// };
-
-// export default InstantConf;
-
-// import React, { useState } from 'react';
-// import {
-//   IonContent,
-//   IonHeader,
-//   IonPage,
-//   IonToolbar,
-//   IonButtons,
-//   IonBackButton,
-//   IonTitle,
-//   IonSearchbar,
-//   IonIcon,
-//   IonLabel,
-//   IonSegment,
-//   IonSegmentButton,
-//   IonModal,
-//   IonButton,
-//   IonInput,
-// } from '@ionic/react';
-// import {
-//   call,
-//   personAdd,
-//   peopleCircle,
-//   volumeMute,
-//   people,
-// } from 'ionicons/icons';
-// import ContactList from './ContactList';
-
-// const InstantConf: React.FC = () => {
-//   const [showModal, setShowModal] = useState(false);
-//   const [name, setName] = useState('');
-//   const [phoneNumber, setPhoneNumber] = useState('');
-
-//   const handleCallButtonClick = () => {
-//     setShowModal(true);
-//   };
-
-//   const handleModalClose = () => {
-//     setShowModal(false);
-//   };
-
-//   const handleStartCall = () => {
-//     // Handle the start call action with the entered name and phone number
-//     console.log('Name:', name);
-//     console.log('Phone number:', phoneNumber);
-
-//     // Perform any additional actions as needed
-
-//     // Close the modal
-//     setShowModal(false);
-//   };
-
-//   return (
-//     <>
-//       <IonPage>
-//         <IonHeader>
-//           <IonToolbar>
-//             <IonButtons slot="start">
-//               <IonBackButton defaultHref="/" />
-//             </IonButtons>
-//             <IonTitle>Start Conference</IonTitle>
-//           </IonToolbar>
-//         </IonHeader>
-//         <IonContent>
-//           <IonSearchbar placeholder="Search" />
-//           <IonSegment value="functions">
-//             <IonSegmentButton value="call" onClick={handleCallButtonClick}>
-//               <IonLabel>Call</IonLabel>
-//               <IonIcon icon={personAdd} />
-//             </IonSegmentButton>
-//             <IonSegmentButton value="heart">
-//               <IonLabel>Add Groups</IonLabel>
-//               <IonIcon icon={peopleCircle} />
-//             </IonSegmentButton>
-//             <IonSegmentButton value="absent">
-//               <IonLabel>Call Absent</IonLabel>
-//               <IonIcon icon={call} />
-//             </IonSegmentButton>
-//             <IonSegmentButton value="mute">
-//               <IonLabel>Mute All</IonLabel>
-//               <IonIcon icon={volumeMute} />
-//             </IonSegmentButton>
-//             <IonSegmentButton value="subconf">
-//               <IonLabel>Create Sub</IonLabel>
-//               <IonLabel>Conference</IonLabel>
-//               <IonIcon icon={people} />
-//             </IonSegmentButton>
-//           </IonSegment>
-//           <ContactList />
-//         </IonContent>
-//       </IonPage>
-
-//       <IonModal isOpen={showModal} onDidDismiss={handleModalClose}>
-//         <IonContent>
-//           <IonHeader>
-//             <IonToolbar>
-//               <IonTitle>Participant Details</IonTitle>
-//             </IonToolbar>
-//           </IonHeader>
-//           <IonInput
-//             type="text"
-//             value={name}
-//             placeholder="Name"
-//             onIonChange={(e) => setName(e.detail.value!)}
-//           />
-//           <IonInput
-//             type="number"
-//             value={phoneNumber}
-//             placeholder="Phone Number"
-//             onIonChange={(e) => setPhoneNumber(e.detail.value!)}
-//           />
-//           <IonButton onClick={handleStartCall}>Add Participant</IonButton>
-//         </IonContent>
-//       </IonModal>
-//     </>
-//   );
-// };
-
-// export default InstantConf;
-
-// import React, { useState } from 'react';
-// import {
-//   IonContent,
-//   IonHeader,
-//   IonPage,
-//   IonToolbar,
-//   IonButtons,
-//   IonBackButton,
-//   IonTitle,
-//   IonSearchbar,
-//   IonIcon,
-//   IonLabel,
-//   IonSegment,
-//   IonSegmentButton,
-//   IonButton,
-// } from '@ionic/react';
-// import {
-//   call,
-//   personAdd,
-//   peopleCircle,
-//   volumeMute,
-//   people,
-// } from 'ionicons/icons';
-// import ContactList from './ContactList';
-// import ParticipantDetailsModal from './ParticipantDetailsModal';
-
-// const InstantConf: React.FC = () => {
-//   const [showModal, setShowModal] = useState(false);
-
-//   const handleCallButtonClick = () => {
-//     setShowModal(true);
-//   };
-
-//   const handleModalClose = () => {
-//     setShowModal(false);
-//   };
-
-//   const handleStartCall = (name: string, phoneNumber: string) => {
-//     // Handle the start call action with the entered name and phone number
-//     console.log('Name:', name);
-//     console.log('Phone number:', phoneNumber);
-
-//     // Perform any additional actions as needed
-
-//     // Close the modal
-//     setShowModal(false);
-//   };
-
-//   return (
-//     <>
-//       <IonPage>
-//         <IonHeader>
-//           <IonToolbar>
-//             <IonButtons slot="start">
-//               <IonBackButton defaultHref="/" />
-//             </IonButtons>
-//             <IonTitle>Start Conference</IonTitle>
-//           </IonToolbar>
-//         </IonHeader>
-//         <IonContent>
-//           <IonSearchbar placeholder="Search" />
-//           <IonSegment value="functions">
-//             <IonSegmentButton value="call" onClick={handleCallButtonClick}>
-//               <IonLabel>Call</IonLabel>
-//               <IonIcon icon={personAdd} />
-//             </IonSegmentButton>
-//             <IonSegmentButton value="heart">
-//               <IonLabel>Add Groups</IonLabel>
-//               <IonIcon icon={peopleCircle} />
-//             </IonSegmentButton>
-//             <IonSegmentButton value="absent">
-//               <IonLabel>Call Absent</IonLabel>
-//               <IonIcon icon={call} />
-//             </IonSegmentButton>
-//             <IonSegmentButton value="mute">
-//               <IonLabel>Mute All</IonLabel>
-//               <IonIcon icon={volumeMute} />
-//             </IonSegmentButton>
-//             <IonSegmentButton value="subconf">
-//               <IonLabel>Create Sub</IonLabel>
-//               <IonLabel>Conference</IonLabel>
-//               <IonIcon icon={people} />
-//             </IonSegmentButton>
-//           </IonSegment>
-//           <ContactList />
-//         </IonContent>
-//       </IonPage>
-
-//       <ParticipantDetailsModal
-//         showModal={showModal}
-//         onClose={handleModalClose}
-//         onStartCall={handleStartCall}
-//       />
-//     </>
-//   );
-// };
-
-// export default InstantConf;
-
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   IonContent,
   IonHeader,
   IonPage,
   IonToolbar,
   IonButtons,
-  IonBackButton,
   IonTitle,
   IonSearchbar,
   IonIcon,
   IonLabel,
-  IonSegment,
-  IonSegmentButton,
-  IonList,
-  IonItem,
-  IonAvatar,
-  IonText,
+  IonButton,
+  IonFab,
+  IonFabButton,
+  IonFabList,
+  IonAlert,
 } from '@ionic/react';
 import {
   call,
-  heart,
-  pin,
   personAdd,
   peopleCircle,
-  personRemove,
   volumeMute,
   people,
-  person,
+  chevronUpCircle,
 } from 'ionicons/icons';
 
 import ModalCall from './ModalCall';
 import ContactList from './ContactList';
 
-const InstantConf: React.FC = () => {
-  const [showModal, setShowModal] = useState(false);
-  const [participants, setParticipants] = useState<
-    { name: string; phoneNumber: string }[]
-  >([]);
+import './InstantConf.css'
+import { useHistory, useLocation, RouteComponentProps } from 'react-router';
+import API from '../api/API.js'
 
-  const handleAddParticipant = (name: string, phoneNumber: string) => {
-    const newParticipant = { name, phoneNumber };
+interface LocationState {
+  meeting: any;
+}
+
+const InstantConf: React.FC<RouteComponentProps<any, any, LocationState>> = ({location}) => {
+  const [showModal, setShowModal] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [participants, setParticipants] = useState([]);
+
+  const history = useHistory();
+
+  const { meeting } = location.state || {};
+  const username = localStorage.getItem('userID')
+
+  useEffect(() =>{
+    API.Login(meeting?.conferenceKey.conferenceID , meeting?.chair , "ConferenceID")
+    .then((res) => {
+      console.log("Join Response: ",res);
+
+      if (res.message === "success") {
+        localStorage.setItem('cred',res.token)
+        localStorage.setItem("Conference ID:", meeting?.conferenceKey.conferenceID)
+
+          // Start the loop function after successful login
+          const loopFunction = setInterval(() => {
+            API.ConferenceInfo(res.token, meeting.conferenceKey.conferenceID, 0)
+              .then((confInfoRes) => {
+                // Process the conference info response here
+                console.log("Conference Info: ", confInfoRes)})},10000)
+
+      } else alert("Invalid Credentials");
+    })
+    .catch((err) => {
+      console.log(err);
+      alert("Something went wrong. Please try again.");
+    });
+    
+    },[]); 
+
+  const token = localStorage.getItem('cred')
+  const confID = localStorage.getItem('Conference ID:')
+
+  const handleClose = () => {
+    setShowAlert(true);
+  }
+
+  const handleConfirmClose = () => {
+    setShowAlert(false);
+    localStorage.setItem('cred',"")
+    localStorage.setItem('Conference ID:',"")
+    history.goBack();
+  };
+
+  const handleCancelClose = () => {
+    setShowAlert(false);
+  };
+
+  const handleAddGroups = () => {
+    console.log('click add groups')
+  };
+
+  const handleCallAbsent = () => {
+    const updatedParticipants = participants.map((participant) => ({
+      ...participant,
+      onCall: true,
+    }));
+    setParticipants(updatedParticipants);
+  };
+
+  const handleMuteAll = () => {
+    const updatedParticipants = participants.map((participant) => ({
+      ...participant,
+      muted: true,
+    }));
+    setParticipants(updatedParticipants);
+  };
+
+  const handleCreateSubConf = () => {
+    console.log('click createsubconf')
+  };
+
+
+  const handleAddParticipant = (name: string, phoneNumber: number) => {
+    const newParticipant = { name, phoneNumber, muted: false };
     setParticipants((prevParticipants) => [
       ...prevParticipants,
       newParticipant,
     ]);
+  };
+
+  const handleDeleteParticipant = (index) => {
+    const updatedParticipants = [...participants];
+    updatedParticipants.splice(index, 1);
+    setParticipants(updatedParticipants);
+  }
+
+  const handleToggleParticipantMute = (index: number) => {
+    const updatedParticipants = [...participants];
+    const participant = updatedParticipants[index];
+    participant.muted = !participant.muted;
+    setParticipants(updatedParticipants);
+  };
+
+  const handleCallParticipantAbsent = (index: number) => {
+    const participant = participants[index]
+    API.InviteParticipants(token, confID, [{
+        name: participant.name,
+        phone: participant.phoneNumber
+  }] )
+  .then((res) => {
+    console.log(res);})
+  .catch((err) => {
+      console.log(err);
+      alert("Something went wrong. Please try again.");
+    })
+    
+    const updatedParticipants = [...participants];
+    participant.onCall = !participant.onCall;
+    setParticipants(updatedParticipants);
   };
 
   return (
@@ -341,47 +157,81 @@ const InstantConf: React.FC = () => {
       <IonPage>
         <IonHeader>
           <IonToolbar>
-            <IonButtons slot="start">
-              <IonBackButton defaultHref="/" />
+            <IonButtons slot="end">
+              <IonButton onClick={handleClose}>Close</IonButton>
             </IonButtons>
-            <IonTitle>Start Conference</IonTitle>
+            <IonTitle>{meeting?.subject ? meeting.subject : `${username}'s Conference`}</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent>
           <IonSearchbar placeholder="Search" />
-          <IonSegment value="functions">
-            <IonSegmentButton value="call" onClick={() => setShowModal(true)}>
-              <IonLabel>Call</IonLabel>
-              <IonIcon icon={personAdd}></IonIcon>
-            </IonSegmentButton>
-            <IonSegmentButton value="heart">
-              <IonLabel>Add Groups</IonLabel>
-              <IonIcon icon={peopleCircle}></IonIcon>
-            </IonSegmentButton>
-            <IonSegmentButton value="absent">
-              <IonLabel>Call Absent</IonLabel>
-              <IonIcon icon={call}></IonIcon>
-            </IonSegmentButton>
-            <IonSegmentButton value="mute">
-              <IonLabel>Mute All</IonLabel>
-              <IonIcon icon={volumeMute}></IonIcon>
-            </IonSegmentButton>
-            <IonSegmentButton value="subconf">
-              <IonLabel> Create Sub</IonLabel>
-              <IonLabel>Conference</IonLabel>
-              <IonIcon icon={people}></IonIcon>
-            </IonSegmentButton>
-          </IonSegment>
-
+          <IonButton className='ion-margin' expand='block' onClick={() => setShowModal(true)}>
+            <IonIcon slot="start" icon={personAdd} />
+            <IonLabel>Add Participants</IonLabel>
+          </IonButton>
           {/* Participant List */}
-          <ContactList participants={participants} />
+          <ContactList 
+            participants={participants} 
+            onDeleteParticipant={handleDeleteParticipant}
+            onToggleParticipantMute={handleToggleParticipantMute}
+            onCallAbsentParticipant= {handleCallParticipantAbsent} />
 
+          {/* Fab Button */}
+          <IonFab className='ion-margin' vertical="bottom" horizontal="end" slot="fixed">
+            <IonFabButton className='fabicon-btn'>
+            <IonIcon icon={chevronUpCircle} />
+          </IonFabButton>
+          <IonFabList side="top">
+          <div className="fabicon-labels">
+            <div className="fabicon-label">
+              <span className='label'>Add Groups</span>
+              <IonFabButton onClick={handleAddGroups} className='fabicon-btn'>
+                <IonIcon icon={peopleCircle} />
+              </IonFabButton>  
+            </div>
+            <div className="fabicon-label">
+              <span className='label'>Call Absent</span>
+              <IonFabButton onClick={handleCallAbsent} className='fabicon-btn'>
+                <IonIcon icon={call} />
+              </IonFabButton>
+            </div>
+            <div className="fabicon-label">
+              <span className='label'>Mute <br />All</span>
+              <IonFabButton onClick={handleMuteAll} className='fabicon-btn'>
+                <IonIcon icon={volumeMute} />
+              </IonFabButton>
+            </div>
+            <div className="fabicon-label">
+              <span className='label'>Create Sub Conf</span>
+              <IonFabButton onClick={handleCreateSubConf} className='fabicon-btn'>
+                <IonIcon icon={people} />
+              </IonFabButton>  
+            </div>
+          </div>
+          </IonFabList>
+          </IonFab>
           {/* Modal */}
           <ModalCall
             isOpen={showModal}
             onAddParticipant={handleAddParticipant}
-            onClose={() => setShowModal(false)}
+            onClose={() => {setShowModal(false)}}
           />
+          <IonAlert
+          isOpen={showAlert}
+          header="Confirmation"
+          message="Are you sure you want to close this page?"
+          buttons={[
+            {
+              text: 'No',
+              role: 'cancel',
+              handler: handleCancelClose,
+            },
+            {
+              text: 'Yes',
+              handler: handleConfirmClose,
+            },
+          ]}
+        />
         </IonContent>
       </IonPage>
     </>
