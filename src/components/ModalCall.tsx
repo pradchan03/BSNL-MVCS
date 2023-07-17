@@ -19,7 +19,7 @@ import API from '../api/API.js'
 
 interface ModalCallProps {
   isOpen: boolean;
-  onAddParticipant: (name: string, phoneNumber: number, smsPhoneNumber:any, emailId:string) => void;
+  onAddParticipant: (name: string, phoneNumber: string, smsPhoneNumber: string , emailId: string) => void;
   onClose: () => void;
 }
 
@@ -30,8 +30,8 @@ const ModalCall: React.FC<ModalCallProps> = ({
 }) => {
 
   const [name, setName] = useState<string>('');
-  const [phoneNumber, setPhoneNumber] = useState<number>(null);
-  const [smsPhoneNumber, setSmsPhoneNumber] = useState<number>(null);
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const [smsPhoneNumber, setSmsPhoneNumber] = useState<string>(null);
   const [emailId, setEmailId] = useState<string>('');
   
   function getCookie(cookieName: any) {
@@ -89,18 +89,18 @@ const ModalCall: React.FC<ModalCallProps> = ({
           <IonLabel position="stacked"><b>Phone Number</b></IonLabel>
           <IonInput
             style={inputStyles}
-            type='tel'
+            type='text'
             value={phoneNumber}
-            onIonInput={(e) => setPhoneNumber(e.detail.value! as number)}
+            onIonInput={(e) => setPhoneNumber(e.detail.value! as string)}
           ></IonInput>
         </IonItem>
         <IonItem>
           <IonLabel position="stacked"><b>SMS Phone Number</b></IonLabel>
           <IonInput
             style={inputStyles}
-            type="tel"
+            type="text"
             value={smsPhoneNumber}
-            onIonInput={(e) => setSmsPhoneNumber(e.detail.value! as number)}
+            onIonInput={(e) => setSmsPhoneNumber(e.detail.value! as string)}
           ></IonInput>
         </IonItem>
         <IonItem>

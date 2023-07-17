@@ -9,13 +9,16 @@ import {
   IonContent,
   IonAlert,
 } from '@ionic/react';
-import { call, mic, micOff, person, trash } from 'ionicons/icons';
+import { call, handLeft, mic, micOff, person, trash } from 'ionicons/icons';
 
 import './InstantConf.css';
 
 interface Participant {
-  name: string;
-  phoneNumber: number;
+  attendeeName: string;
+  addressEntry: {
+    address: string;
+    type: string;
+  }[];
   muted: boolean;
   onCall: boolean;
 }
@@ -44,7 +47,6 @@ const ContactList: React.FC<ContactListProps> = ({
   const [selectedParticipantIndex, setSelectedParticipantIndex] =
     useState<number>(-1);
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
-  // const[raiseHand,setRaiseHand]=useState(false);
 
   const handleDeleteParticipant = (index: number) => {
     setSelectedParticipantIndex(index);
@@ -111,7 +113,11 @@ const ContactList: React.FC<ContactListProps> = ({
             >
               <IonIcon icon={trash} />
             </IonButtons>
-            <IonIcon slot="start" icon={person}></IonIcon>
+            {showHand ? (
+              <IonIcon slot="start" icon={handLeft} color="warning" />
+            ) : (
+              <IonIcon slot="start" icon={person} />
+            )}
             {/* <IonLabel> */}
             <IonText>
               <IonLabel style={{ fontWeight: '600', paddingBottom: '5px' }}>

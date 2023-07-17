@@ -214,7 +214,7 @@ const InstantConf: React.FC<RouteComponentProps<any, any, LocationState>> = ({lo
           <ModalCall
             isOpen={showModal}
             onAddParticipant={handleAddParticipant}
-            onClose={() => setShowModal(false)}
+            onClose={() => {setShowModal(false)}}
           />
           <IonAlert
           isOpen={showAlert}

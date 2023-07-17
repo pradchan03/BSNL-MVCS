@@ -5,10 +5,12 @@ import {
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
+  IonChip,
   IonCol,
   IonContent,
   IonGrid,
   IonIcon,
+  IonLabel,
   IonRow,
   IonText,
 } from '@ionic/react';
@@ -16,15 +18,15 @@ import { chevronDownOutline, chevronUpOutline, trash } from 'ionicons/icons';
 import API from '../api/API.js'
 import './UpcomingMeetings.scss';
 import { useHistory } from 'react-router';
-import InstantConf from '../components/InstantConf.js';
 
 const UpcomingMeetings: React.FC<{ searchSubject: string }> = ({
   searchSubject,
 }) => {
   const [meetings, setMeetings] = useState<any[]>([]);
+  const [attendees, setAttendees] = useState([])
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
   const [emptyList, setEmptyList] = useState(false)
-
+  
   const currentTimeUTC = Date.now()
   const history = useHistory();
 
@@ -52,6 +54,8 @@ const UpcomingMeetings: React.FC<{ searchSubject: string }> = ({
           .map((meeting) => meeting);
         setMeetings(meetingArray);
         if(res.message === 'no_upcoming_meetings'){
+          const mappedAttendees = meetings.map((meeting) => meeting.attendees);
+          setAttendees(mappedAttendees);
           setEmptyList(true)
         }
         else{
@@ -61,7 +65,7 @@ const UpcomingMeetings: React.FC<{ searchSubject: string }> = ({
       .catch((err: any) => {
         alert('Could not fetch meeting details. Please try again later.');
       });
-  }, []);
+  }, [meetings]);
 
   //Conversion Functions
 
@@ -230,10 +234,16 @@ const UpcomingMeetings: React.FC<{ searchSubject: string }> = ({
                 <br />
                 <IonText>Participants: {meeting.size} </IonText>
                 <br />
+                <IonText>Attendees:</IonText>
+                <br />
+                {meeting.attendees && meeting.attendees.map((attendee: any, index: number) => (
+                  <IonChip className='ion-padding' color='light' key={index}>{attendee.attendeeName}</IonChip>
+                ))}
                 </>: <></>
                 }
                 {/* <IonText>Participants: {meeting.numParticipants} </IonText><br /> */}
                 <br />
+                
                 {currentTimeUTC > meeting.startTime?
                 
                 <IonButton
