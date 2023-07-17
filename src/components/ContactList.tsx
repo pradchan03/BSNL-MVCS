@@ -61,10 +61,10 @@ const ContactList: React.FC<ContactListProps> = ({
           <IonItem key={index}>
             {participant.onCall?
             (<IonButtons className='ion-padding participant-btn' slot='end'>
-              <IonIcon color='danger' icon='../public/assets/icon/call_end_FILL1_wght400_GRAD0_opsz48.svg' onClick={() => onCallAbsentParticipant(index)} />
+              <IonIcon icon='../public/assets/icon/call_end_FILL1_wght400_GRAD0_opsz48.svg' onClick={() => onCallAbsentParticipant(index)} />
             </IonButtons>):
             (<IonButtons className='ion-padding participant-btn' slot='end'>
-              <IonIcon color='success' icon={call} onClick={() => onCallAbsentParticipant(index)} />
+              <IonIcon icon={call} onClick={() => onCallAbsentParticipant(index)} />
             </IonButtons>)}
             {participant.muted?
             <IonButtons className='ion-padding participant-btn' slot='end'>

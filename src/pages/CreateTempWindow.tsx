@@ -81,7 +81,6 @@ const DetailsModal: React.FC<DetailsModalProps> = ({ isOpen, onCancel }) => {
   const handleSave = () => {
     const durationInt = parseInt(duration);
     const participants = parseInt(num, 10);
-    console.log(participants);
 
     const durationInMilliseconds = durationInt * 60 * 1000;
 

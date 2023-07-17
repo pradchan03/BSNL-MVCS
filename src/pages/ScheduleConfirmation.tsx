@@ -20,6 +20,7 @@ import {
 import { useHistory, useLocation, RouteComponentProps } from 'react-router';
 import './ScheduleConfirmation.scss';
 
+<<<<<<< HEAD
 interface LocationState {
   meeting: any;
 }
@@ -111,6 +112,38 @@ const ScheduleConfirmation: React.FC<
                   </IonText>
                 </IonCol>
                 <IonCol size="6" className="ion-padding">
+=======
+const ScheduleConfirmation: React.FC = () => {
+  return (
+    <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonBackButton defaultHref="/tabs"></IonBackButton>
+          </IonButtons>
+          <IonTitle>Metting Confirmation</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent>
+        <IonCard className="custom-card">
+          <IonCardHeader>
+            <IonCardTitle>Conference created successfully!</IonCardTitle>
+          </IonCardHeader>
+          <IonCardContent>
+            The conference notification has been sent to you via SMS or email.
+          </IonCardContent>
+        </IonCard>
+        <div>
+          <IonGrid>
+            <IonRow>
+              <IonCol size="4">
+                <IonLabel className="account-labels"> Subject </IonLabel>
+              </IonCol>
+              <IonCol size="8">
+                <IonText style={{ fontWeight: '600' }}>fjskfs</IonText>
+              </IonCol>
+              {/* <IonCol size="4">
+>>>>>>> 7eadbfa (attendee names add)
                   <IonLabel className="account-labels"> Date </IonLabel>
                 </IonCol>
                 <IonCol size="6" className="ion-padding">
