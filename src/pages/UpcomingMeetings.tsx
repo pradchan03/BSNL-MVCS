@@ -26,11 +26,7 @@ const UpcomingMeetings: React.FC<{ searchSubject: string }> = ({
   const [attendees, setAttendees] = useState([])
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
   const [emptyList, setEmptyList] = useState(false)
-
-  meetings.map((meeting) => (
-    setAttendees((prevAttendees) => [...prevAttendees, meeting.attendees])
-  ))
-
+  
   const currentTimeUTC = Date.now()
   const history = useHistory();
 
@@ -58,6 +54,8 @@ const UpcomingMeetings: React.FC<{ searchSubject: string }> = ({
           .map((meeting) => meeting);
         setMeetings(meetingArray);
         if(res.message === 'no_upcoming_meetings'){
+          const mappedAttendees = meetings.map((meeting) => meeting.attendees);
+          setAttendees(mappedAttendees);
           setEmptyList(true)
         }
         else{
@@ -67,7 +65,7 @@ const UpcomingMeetings: React.FC<{ searchSubject: string }> = ({
       .catch((err: any) => {
         alert('Could not fetch meeting details. Please try again later.');
       });
-  }, []);
+  }, [meetings]);
 
   //Conversion Functions
 
@@ -238,7 +236,7 @@ const UpcomingMeetings: React.FC<{ searchSubject: string }> = ({
                 <br />
                 <IonText>Attendees:</IonText>
                 <br />
-                { meeting.attendees.map((attendee, index) => (
+                {meeting.attendees && meeting.attendees.map((attendee: any, index: number) => (
                   <IonChip className='ion-padding' color='light' key={index}>{attendee.attendeeName}</IonChip>
                 ))}
                 </>: <></>

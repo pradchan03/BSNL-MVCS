@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { IonList, IonItem, IonText, IonIcon, IonLabel, IonButtons, IonContent, IonAlert } from '@ionic/react';
-import { call, mic, micOff, person, trash } from 'ionicons/icons';
+import { call, handLeft, mic, micOff, person, trash } from 'ionicons/icons';
 
 import './InstantConf.css'
 
 interface Participant {
-  name: string;
-  phoneNumber: number;
+  attendeeName: string;
+  addressEntry: {
+    address: string,
+    type: string,
+  }[];
   muted: boolean;
   onCall: boolean;
 }
@@ -34,7 +37,8 @@ const ContactList: React.FC<ContactListProps> = ({
 
   const [selectedParticipantIndex, setSelectedParticipantIndex] = useState<number>(-1);
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
-   
+  const [showHand, setShowHand] = useState(false)
+
   const handleDeleteParticipant = (index: number) => {
     setSelectedParticipantIndex(index);
     setShowDeleteAlert(true);
@@ -52,7 +56,7 @@ const ContactList: React.FC<ContactListProps> = ({
     setSelectedParticipantIndex(-1);
     setShowDeleteAlert(false);
   };
-
+  
   return (    
     <IonContent scrollY={true}>
       <IonText className='ion-padding ion-no-margin' style={inStyles}>Participants List</IonText>
@@ -76,11 +80,13 @@ const ContactList: React.FC<ContactListProps> = ({
             <IonButtons className='ion-padding participant-btn' slot='end' onClick={() => handleDeleteParticipant(index)}>
               <IonIcon icon={trash} />
             </IonButtons>
-            <IonIcon slot="start" icon={person}></IonIcon>
+            {showHand?
+            <IonIcon slot='start' icon={handLeft} color='warning' />:
+            <IonIcon slot="start" icon={person} />}
             {/* <IonLabel> */}
             <IonText>
-              <IonLabel style={{fontWeight:'600', paddingBottom:'5px'}}>{participant.name}</IonLabel>
-              <IonLabel style={{fontSize:'12px'}}>Phone: {participant.phoneNumber}</IonLabel>
+              <IonLabel style={{fontWeight:'600', paddingBottom:'5px'}}>{participant?.attendeeName}</IonLabel>
+              <IonLabel style={{fontSize:'12px'}}>Phone: {participant?.addressEntry[0]?.type}</IonLabel>
             </IonText>
             {/* </IonLabel> */}
           </IonItem>
